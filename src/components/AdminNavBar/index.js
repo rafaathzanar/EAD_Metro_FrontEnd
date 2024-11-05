@@ -1,7 +1,7 @@
 import React from "react";
 
 function AdminNavBar() {
-  return <div>AdminNavBarrr</div>;
+  return <div>AdminNavBarrrr</div>;
 }
 
 export default AdminNavBar;

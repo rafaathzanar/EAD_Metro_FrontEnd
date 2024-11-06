@@ -1,12 +1,14 @@
-import { useState, useContext } from "react";
+import { useState, useContext, Profiler } from "react";
 import {
   Bars3Icon,
   XMarkIcon,
   HeartIcon,
   ShoppingCartIcon,
   MagnifyingGlassIcon,
+  UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import { PromotionalContext } from "../../context/promocontext";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -14,7 +16,7 @@ export default function Header() {
 
   return (
     <div>
-      <div className="bg-black border-b-2 p-3 flex justify-center items-center ">
+      <div className="bg-black border-b-2 p-1 flex justify-center items-center">
         <text className="text-white">{promoMessage}</text>
         <a
           href={promoLink}
@@ -25,66 +27,66 @@ export default function Header() {
       </div>
       <header className="bg-gradient-to-b from-black to-orange-500 text-white">
         <nav className="container mx-auto flex items-center justify-between p-4">
-          <div className="flex items-center space-x-4">
-            <a href="#" className="text-2xl ml-5 font-bold">
+          <div className="hidden sm:flex items-center space-x-4">
+            <a href="#" className="text-2xl font-bold">
               METRO
             </a>
             <div className="hidden pl-7 space-x-6 md:flex ">
-              <a href="#" className="hover:font-extrabold ">
+              <Link className="hover:font-extrabold" to="/homepage">
                 Home
-              </a>
-              <a href="#" className="hover:font-extrabold">
-                Contact
-              </a>
-              <a href="#" className="hover:font-extrabold">
+              </Link>
+              <Link to="/aboutpage" className="hover:font-extrabold">
                 About
-              </a>
-              <a href="#" className="hover:font-extrabold">
-                Sign Up
-              </a>
+              </Link>
+              <Link to="/contactpage" className="hover:font-extrabold">
+                Contact
+              </Link>
+              <Link to="/signin" className="hover:font-extrabold">
+                SignIn
+              </Link>
             </div>
           </div>
 
-          <div className="flex items-center space-x-2 bg-white rounded-sm p-2 w-1/2 md:w-1/3 ">
+          <div className="flex items-center bg-white rounded-full m-1 p-2 w-full sm:w-1/2 md:w-1/3">
             <input
               type="text"
-              placeholder="What are you looking?"
-              className="flex-grow outline-none px-1 text-gray-400 placeholder-transparent sm:placeholder-gray-400"
+              placeholder="What are you looking for?"
+              className="flex-grow outline-none text-gray-600 px-2 py-1  sm:placeholder-gray-400 "
             />
-            <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+            <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 cursor-pointer" />
+          </div>
+
+          <div className="md:hidden flex items-center">
+            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+              {mobileMenuOpen ? (
+                <XMarkIcon className="h-6 w-6" />
+              ) : (
+                <Bars3Icon className="h-6 w-6" />
+              )}
+            </button>
           </div>
 
           <div className="hidden md:flex items-center space-x-4">
             <HeartIcon className="h-6 w-6 cursor-pointer" />
             <ShoppingCartIcon className="h-6 w-6 cursor-pointer" />
+            <UserCircleIcon className="h-6 w-6 cursor-pointer" />
           </div>
-
-          <button
-            className="md:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? (
-              <XMarkIcon className="h-6 w-6" />
-            ) : (
-              <Bars3Icon className="h-6 w-6" />
-            )}
-          </button>
         </nav>
 
         {mobileMenuOpen && (
           <div className="md:hidden bg-orange-500 text-white p-4 space-y-2">
-            <a href="#" className="block">
+            <Link className="block" to="/homepage">
               Home
-            </a>
-            <a href="#" className="block">
-              Contact
-            </a>
-            <a href="#" className="block">
+            </Link>
+            <Link to="/aboutpage" className="block">
               About
-            </a>
-            <a href="#" className="block">
-              Sign Up
-            </a>
+            </Link>
+            <Link to="/contactpage" className="block">
+              Contact
+            </Link>
+            <Link to="/signin" className="block">
+              SignIn
+            </Link>
           </div>
         )}
       </header>

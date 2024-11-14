@@ -1,13 +1,12 @@
 import React from "react";
-import { TrashIcon } from "lucide-react";
 import Appbar from "../components/Appbar/index";
 import Footer from "../components/Footer/index";
 
 const Cart = () => {
     const cartItems = [
-        { id: 1, name: "iPhone 8+", price: 75000, quantity: 1, image: "path/to/image1.jpg" },
-        { id: 2, name: "HI Gamepad", price: 5000, quantity: 1, image: "path/to/image2.jpg" },
-        { id: 3, name: "Bluetooth Speaker", price: 3000, quantity: 2, image: "path/to/image3.jpg" },
+        { id: 1, name: "iPhone 8+", price: 75000, quantity: 1 },
+        { id: 2, name: "HI Gamepad", price: 5000, quantity: 1 },
+        { id: 3, name: "Bluetooth Speaker", price: 3000, quantity: 2 },
     ];
 
     const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -17,58 +16,58 @@ const Cart = () => {
         <div className="min-h-screen bg-white">
             <Appbar />
 
-            <main className="container mx-auto py-16">
+            {/* Page Container with Margins */}
+            <main className="container mx-auto p-4 md:p-8 lg:p-16 bg-white">
 
                 {/* Cart Table */}
-                <table className="w-full border-collapse">
-                    <thead>
-                    <tr className="bg-gradient-to-b from-black to-orange-500 text-white">
-                        <th className="p-4 border">Product</th>
-                        <th className="p-4 border">Price</th>
-                        <th className="p-4 border">Quantity</th>
-                        <th className="p-4 border">Subtotal</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {cartItems.map((item) => (
-                        <tr key={item.id} className="border-b">
-                            <td className="p-4 flex items-center">
-                                <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded mr-4" />
-                                <span>{item.name}</span>
-                            </td>
-                            <td className="p-4 text-center">Rs.{item.price.toLocaleString()}</td>
-                            <td className="p-4 text-center">
-                                <div className="flex items-center justify-center space-x-2">
-                                    <button className="px-2 py-1 bg-black text-white hover:bg-gradient-to-b from-black to-orange-500 rounded">-</button>
-                                    <span>{item.quantity}</span>
-                                    <button className="px-2 py-1 bg-black text-white hover:bg-gradient-to-b from-black to-orange-500 rounded">+</button>
-                                </div>
-                            </td>
-                            <td className="p-4 text-center">Rs.{(item.price * item.quantity).toLocaleString()}</td>
+                <div className="overflow-x-auto"> {/* Allows horizontal scroll on smaller screens */}
+                    <table className="w-full table-fixed border-collapse">
+                        <thead>
+                        <tr className="bg-gradient-to-b from-black to-orange-500 text-white">
+                            <th className="p-4 border w-1/3">Product</th>
+                            <th className="p-4 border w-1/6">Price</th>
+                            <th className="p-4 border w-1/6">Quantity</th>
+                            <th className="p-4 border w-1/6">Subtotal</th>
                         </tr>
-                    ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {cartItems.map((item) => (
+                            <tr key={item.id} className="border-b">
+                                <td className="p-4">{item.name}</td>
+                                <td className="p-4 text-center">Rs.{item.price.toLocaleString()}</td>
+                                <td className="p-4 text-center">
+                                    <div className="flex items-center justify-center space-x-2">
+                                        <button className="px-2 py-1 bg-black text-white hover:bg-gradient-to-b from-black to-orange-500 rounded">-</button>
+                                        <span>{item.quantity}</span>
+                                        <button className="px-2 py-1 bg-black text-white hover:bg-gradient-to-b from-black to-orange-500 rounded">+</button>
+                                    </div>
+                                </td>
+                                <td className="p-4 text-center">Rs.{(item.price * item.quantity).toLocaleString()}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
 
                 {/* Cart Actions */}
                 <div className="flex justify-between mt-6">
-                    <button className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400">Return to Shop</button>
+                    <button className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400">Return to Home</button>
                     <button className="bg-black text-white px-4 py-2 rounded hover:bg-gradient-to-b from-black to-orange-500">Update Cart</button>
                 </div>
 
                 {/* Coupon and Cart Summary */}
-                <div className="flex flex-col md:flex-row justify-between mt-10 items-start">
+                <div className="flex flex-col md:flex-row justify-between mt-10 items-start gap-6">
                     {/* Coupon Section */}
                     <div className="flex items-center space-x-2 mb-4 md:mb-0 md:w-1/2">
                         <input
                             type="text"
                             placeholder="Coupon Code"
-                            className="border p-2 rounded h-12 w-full md:w-auto md:flex-grow" // Adjusts width for consistency
-                            style={{ maxWidth: "70%" }} // Ensures similar sizing across devices
+                            className="border p-2 rounded h-12 w-full md:w-auto md:flex-grow"
+                            style={{ maxWidth: "70%" }}
                         />
                         <button
                             className="h-12 px-6 bg-black text-white font-bold rounded hover:bg-gradient-to-b from-black to-orange-500 transition-all flex items-center justify-center"
-                            style={{ maxWidth: "30%" }} // Matches the input’s width allocation
+                            style={{ maxWidth: "30%" }}
                         >
                             Apply Coupon
                         </button>
@@ -92,14 +91,15 @@ const Cart = () => {
                             </div>
                         </div>
                         <button
-                            className="mt-6 w-full py-2 bg-black text-white font-bold rounded hover:bg-gradient-to-b from-black to-orange-500 transition-all">
+                            className="mt-6 w-full py-2 bg-black text-white font-bold rounded hover:bg-gradient-to-b from-black to-orange-500 transition-all"
+                        >
                             Proceed to Checkout
                         </button>
                     </div>
                 </div>
             </main>
 
-            <Footer/>
+            <Footer />
         </div>
     );
 };

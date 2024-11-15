@@ -11,8 +11,17 @@ import HomePage from "./pages/Home";
 import ContactPage from "./pages/ContactPage";
 import AboutPage from "./pages/About";
 import ForgotPw from "./pages/ForgorPw";
+import ProductDetails from "./pages/ProductDetails"; 
 
 function App() {
+  // Sample product data for testing
+  const sampleProduct = {
+    imageUrl: "https://example.com/product-image.jpg",
+    name: "Sample Product",
+    price: "25000",
+    description: "This is a sample product description.",
+  };
+
   return (
     <PromotionalProvider>
       <BrowserRouter>
@@ -24,6 +33,7 @@ function App() {
           <Route path="/contactpage" element={<ContactPage />} />
           <Route path="/aboutpage" element={<AboutPage />} />
           <Route path="/forgotpw" element={<ForgotPw />} />
+          <Route path="/productdetails" element={<ProductDetails product={sampleProduct} />} />
         </Routes>
       </BrowserRouter>
     </PromotionalProvider>

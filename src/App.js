@@ -11,6 +11,7 @@ import HomePage from "./pages/Home";
 import ContactPage from "./pages/ContactPage";
 import AboutPage from "./pages/About";
 import ForgotPw from "./pages/ForgorPw";
+import Cart from './pages/Cart';
 
 function App() {
   return (
@@ -24,6 +25,8 @@ function App() {
           <Route path="/contactpage" element={<ContactPage />} />
           <Route path="/aboutpage" element={<AboutPage />} />
           <Route path="/forgotpw" element={<ForgotPw />} />
+          <Route path="/cart" element={<Cart />} />
+
         </Routes>
       </BrowserRouter>
     </PromotionalProvider>

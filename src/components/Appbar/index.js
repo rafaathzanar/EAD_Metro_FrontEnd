@@ -1,14 +1,14 @@
-import { useState, useContext, Profiler } from "react";
 import {
   Bars3Icon,
-  XMarkIcon,
   HeartIcon,
-  ShoppingCartIcon,
   MagnifyingGlassIcon,
+  ShoppingCartIcon,
   UserCircleIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { PromotionalContext } from "../../context/promocontext";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { PromotionalContext } from "../../context/promocontext";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

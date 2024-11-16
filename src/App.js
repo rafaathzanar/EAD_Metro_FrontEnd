@@ -5,7 +5,7 @@ import AboutPage from "./pages/About";
 import AdminLayout from "./pages/AdminLayout";
 import Cart from "./pages/Cart";
 import ContactPage from "./pages/ContactPage";
-import DashboardLayout from "./pages/DashboardLayout";
+// import DashboardLayout from "./pages/DashboardLayout";
 import Delivery from "./pages/Delivery";
 import ForgotPw from "./pages/ForgorPw";
 import HomePage from "./pages/Home";
@@ -45,18 +45,34 @@ function App() {
             element={<ProductDetails product={sampleProduct} />}
           />
 
+          <Route
+            path="admin/vouchers"
+            element={<AdminLayout children={<Vouchers />} />}
+          />
+
+          <Route
+            path="admin/sells"
+            element={<AdminLayout children={<Sells />} />}
+          />
+
           {/* Admin Routes */}
           {isLoggedIn && (
             <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<DashboardLayout />} />
+              <Route
+                index
+                element={<AdminLayout children={<StockAndInventory />} />}
+              />
               <Route
                 path="stocks-and-inventory"
                 element={<StockAndInventory />}
               />
-              <Route path="vouchers" element={<Vouchers />} />
-              <Route path="sells" element={<Sells />} />
+              {/* <Route path="sells" element={<Sells />} /> */}
               <Route path="delivery" element={<Delivery />} />
               <Route path="orders" element={<Orders />} />
+              {/* <Route
+                path="vouchers"
+                element={<AdminLayout children={<Vouchers />} />}
+              /> */}
             </Route>
           )}
         </Routes>

@@ -8,12 +8,12 @@ export default function AdminNavbar() {
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex m-10">
       {/* Sidebar */}
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
       {/* TopBar */}
-      <div className="flex-grow">
+      <div>
         <TopBar toggleSidebar={toggleSidebar} />
       </div>
 

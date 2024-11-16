@@ -1,12 +1,17 @@
-// src/pages/AdminLayout.js
 import React from "react";
-import AdminNavbar from "../components/AdminNavBar/AdminNavbar"; // Adjust the path as necessary
+import AdminNavbar from "../components/AdminNavBar/AdminNavbar";
 
 const AdminLayout = ({ children }) => {
   return (
-    <div>
+    <div className="flex flex-col h-screen">
+      {/* Top Navbar */}
       <AdminNavbar />
-      <div className="admin-content">{children}</div>
+
+      {/* Main Content Area */}
+      <div className="flex flex-1">
+        {/* Main Content */}
+        <div className="flex-1 p-4 overflow-auto">{children}</div>
+      </div>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 // src/pages/AdminLayout.js
 import React from "react";
-import AdminNavbar from "../components/AdminNavbar/AdminNavbar"; // Adjust the path as necessary
+import AdminNavbar from "../components/AdminNavBar/AdminNavbar"; // Adjust the path as necessary
 
 const AdminLayout = ({ children }) => {
   return (

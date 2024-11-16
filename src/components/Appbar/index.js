@@ -1,3 +1,4 @@
+import { useState, useContext } from "react";
 import {
   Bars3Icon,
   HeartIcon,
@@ -6,7 +7,6 @@ import {
   UserCircleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { PromotionalContext } from "../../context/promocontext";
 
@@ -31,7 +31,7 @@ export default function Header() {
             <a href="#" className="text-2xl font-bold">
               METRO
             </a>
-            <div className="hidden pl-7 space-x-6 md:flex ">
+            <div className="hidden pl-7 space-x-6 md:flex">
               <Link className="hover:font-extrabold" to="/homepage">
                 Home
               </Link>
@@ -51,7 +51,7 @@ export default function Header() {
             <input
               type="text"
               placeholder="What are you looking for?"
-              className="flex-grow outline-none text-gray-600 px-2 py-1  sm:placeholder-gray-400 "
+              className="flex-grow outline-none text-gray-600 px-2 py-1 sm:placeholder-gray-400"
             />
             <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 cursor-pointer" />
           </div>
@@ -68,7 +68,12 @@ export default function Header() {
 
           <div className="hidden md:flex items-center space-x-4">
             <HeartIcon className="h-6 w-6 cursor-pointer" />
-            <ShoppingCartIcon className="h-6 w-6 cursor-pointer" />
+            <Link to="/cart">
+              <ShoppingCartIcon
+                className="h-6 w-6 cursor-pointer"
+                aria-label="Cart"
+              />
+            </Link>
             <UserCircleIcon className="h-6 w-6 cursor-pointer" />
           </div>
         </nav>

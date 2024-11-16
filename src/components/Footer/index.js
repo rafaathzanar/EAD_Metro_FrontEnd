@@ -1,5 +1,5 @@
+import { ArrowRight, Facebook, Instagram, Twitter } from "lucide-react";
 import React from "react";
-import { ArrowRight, Facebook, Twitter, Instagram, Tiktok } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();

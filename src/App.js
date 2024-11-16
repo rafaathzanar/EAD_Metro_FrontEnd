@@ -13,6 +13,7 @@ import AboutPage from "./pages/About";
 import ForgotPw from "./pages/ForgorPw";
 import Cart from './pages/Cart';
 import ProductDetails from "./pages/ProductDetails"; 
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   // Sample product data for testing
@@ -37,6 +38,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
 
           <Route path="/productdetails" element={<ProductDetails product={sampleProduct} />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </BrowserRouter>
     </PromotionalProvider>

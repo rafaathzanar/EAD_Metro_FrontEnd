@@ -20,51 +20,49 @@ import Vouchers from "./pages/Vouchers";
 function App() {
   const isLoggedIn = true;
 
-  function App() {
-    // Sample product data for testing
-    const sampleProduct = {
-      imageUrl: "https://example.com/product-image.jpg",
-      name: "Sample Product",
-      price: "25000",
-      description: "This is a sample product description.",
-    };
+  // Sample product data for testing
+  const sampleProduct = {
+    imageUrl: "https://example.com/product-image.jpg",
+    name: "Sample Product",
+    price: "25000",
+    description: "This is a sample product description.",
+  };
 
-    return (
-      <PromotionalProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route index element={<HomePage />} />
-            <Route path="/homepage" element={<HomePage />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/signUp" element={<SignUp />} />
-            <Route path="/contactpage" element={<ContactPage />} />
-            <Route path="/aboutpage" element={<AboutPage />} />
-            <Route path="/forgotpw" element={<ForgotPw />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route
-              path="/productdetails"
-              element={<ProductDetails product={sampleProduct} />}
-            />
+  return (
+    <PromotionalProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<HomePage />} />
+          <Route path="/homepage" element={<HomePage />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signUp" element={<SignUp />} />
+          <Route path="/contactpage" element={<ContactPage />} />
+          <Route path="/aboutpage" element={<AboutPage />} />
+          <Route path="/forgotpw" element={<ForgotPw />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route
+            path="/productdetails"
+            element={<ProductDetails product={sampleProduct} />}
+          />
 
-            {/* Admin Routes */}
-            {isLoggedIn && (
-              <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<DashboardLayout />} />
-                <Route
-                  path="stocks-and-inventory"
-                  element={<StockAndInventory />}
-                />
-                <Route path="vouchers" element={<Vouchers />} />
-                <Route path="sells" element={<Sells />} />
-                <Route path="delivery" element={<Delivery />} />
-                <Route path="orders" element={<Orders />} />
-              </Route>
-            )}
-          </Routes>
-        </BrowserRouter>
-      </PromotionalProvider>
-    );
-  }
+          {/* Admin Routes */}
+          {isLoggedIn && (
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<DashboardLayout />} />
+              <Route
+                path="stocks-and-inventory"
+                element={<StockAndInventory />}
+              />
+              <Route path="vouchers" element={<Vouchers />} />
+              <Route path="sells" element={<Sells />} />
+              <Route path="delivery" element={<Delivery />} />
+              <Route path="orders" element={<Orders />} />
+            </Route>
+          )}
+        </Routes>
+      </BrowserRouter>
+    </PromotionalProvider>
+  );
 }
 
 export default App;

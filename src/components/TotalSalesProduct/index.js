@@ -2,8 +2,8 @@ import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 
 
-function TopBuyersset(TopBuyers , DummyTopBuyers) {
-    if (!DummyTopBuyers || DummyTopBuyers.length === 0) {
+function TopBuyersset(TopBuyers) {
+    if (!TopBuyers || TopBuyers.length === 0) {
       return [];
     }
   
@@ -13,7 +13,7 @@ function TopBuyersset(TopBuyers , DummyTopBuyers) {
       'Cancelled': 0,
     };
   
-    DummyTopBuyers.forEach((buyer) => {
+    TopBuyers.forEach((buyer) => {
       if (statusCounts[buyer.status] !== undefined) {
         statusCounts[buyer.status] += 1;
       }
@@ -31,18 +31,9 @@ function TopBuyersset(TopBuyers , DummyTopBuyers) {
 
 function TotalSalesProduct({TopBuyers}) {
 
-    const DummyTopBuyers = [
-        { id: 1, productName: 'iPhone 13 Pro', status: 'Delivered' },
-        { id: 2, productName: 'Rayban Sunglasses', status: 'Cancelled' },
-        { id: 3, productName: 'Sony Headphones', status: 'Pending Delivery' },
-        { id: 4, productName: 'MacBook Pro', status: 'Delivered' },
-        { id: 5, productName: 'Nike Air Max', status: 'Cancelled' },
-        { id: 6, productName: 'Samsung Galaxy S21', status: 'Cancelled' },
-        { id: 7, productName: 'Kindle Paperwhite', status: 'Delivered' },
-        { id: 8, productName: 'Apple Watch Series 7', status: 'Pending Delivery' },
-      ];
+ 
 
-      const data = TopBuyersset(TopBuyers , DummyTopBuyers)
+      const data = TopBuyersset(TopBuyers )
       const totalProducts = data.reduce((acc, cur) => acc + cur.value, 0);
 
 
@@ -50,13 +41,13 @@ function TotalSalesProduct({TopBuyers}) {
 
   return (
     
-    <div className="bg-gray-100 p-6 rounded-lg shadow-lg w-full max-w-3xl xl:max-w-4xl m-4 mt-6">
+    <div className="bg-gray-100 p-6 rounded-lg shadow-lg w-full max-w-3xl xl:max-w-4xl m-4 mt-1">
       <div className="flex items-center mb-4">
         <h2 className="text-xl font-semibold">Total Sales Product</h2>
       </div>
 
       <div className="h-auto lg:h-52 flex flex-col md:flex-row items-center m-4 pr-5">
-        
+
   {/* Product Summary and Legend */}
   <div className="md:mr-8 mb-4 md:mb-0 md:pl-6">
     <div className="text-xl font-semibold mb-4">{totalProducts} Total Product</div>

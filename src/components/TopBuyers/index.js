@@ -4,7 +4,7 @@ import React from 'react';
 function TopBuyers({TopBuyers}) {
 
   return (
-    <div className="bg-gray-100 p-6 rounded-lg shadow-lg w-full max-w-4xl m-4 mt-6">
+    <div className="bg-gray-100 p-6 rounded-lg shadow-lg w-full max-w-4xl m-4 mt-1">
       <div className="flex items-center mb-4">
         <h2 className="text-xl font-semibold">Top Buyers</h2>
       </div>

@@ -2,21 +2,9 @@ import React from 'react';
 
 
 function FastSelling({products}) {
-
-  const tempproducts = [
-    { id: 1, title: 'iPhone 7 Plus', sellThisMonth: 10, available: 20, status: 'Full' },
-    { id: 2, title: 'Rayban Se-200', sellThisMonth: 5, available: 30, status: 'Full' },
-    { id: 3, title: 'JBL AA Speaker', sellThisMonth: 3, available: 10, status: 'Pending' },
-    { id: 4, title: 'T-32 Watch', sellThisMonth: 10, available: 5, status: 'Order' },
-    { id: 1, title: 'iPhone 7 Plus', sellThisMonth: 10, available: 20, status: 'Full' },
-    { id: 2, title: 'Rayban Se-200', sellThisMonth: 5, available: 30, status: 'Full' },
-    { id: 3, title: 'JBL AA Speaker', sellThisMonth: 3, available: 10, status: 'Pending' },
-    { id: 4, title: 'T-32 Watch', sellThisMonth: 10, available: 5, status: 'Order' },
-  ];
-
   
   return (
-    <div className="bg-gray-100 p-6 rounded-lg shadow-lg w-full max-w-4xl m-4 mt-6">
+    <div className="bg-gray-100 p-6 rounded-lg shadow-lg w-full max-w-4xl m-4 mt-1">
       <div className="flex items-center mb-4">
         <h2 className="text-xl font-semibold">Fast Selling</h2>
       </div>
@@ -33,8 +21,8 @@ function FastSelling({products}) {
             </tr>
           </thead>
           <tbody >
-          {tempproducts && tempproducts.length > 0 ? (
-  tempproducts.map((product) => (
+          {products && products.length > 0 ? (
+  products.map((product) => (
     <tr key={product.id} className="">
       <td className="py-3 px-4 text-gray-700">{String(product.id).padStart(2, '0')}</td>
       <td className="py-3 px-4 text-gray-700">{product.title}</td>

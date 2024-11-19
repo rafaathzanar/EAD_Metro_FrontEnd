@@ -29,7 +29,7 @@ function DashboardLayout() {
     { id: 4, title: 'T-32 Watch', sellThisMonth: 10, available: 5, status: 'Order' },
   ];
 
-  const DummyTopBuyers = [
+  const DummySalesProduct = [
     { id: 1, productName: 'iPhone 13 Pro', status: 'Delivered' },
     { id: 2, productName: 'Rayban Sunglasses', status: 'Cancelled' },
     { id: 3, productName: 'Sony Headphones', status: 'Pending Delivery' },
@@ -54,7 +54,7 @@ function DashboardLayout() {
     <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4 mt-6">
       <TopBuyers TopBuyers={temptopBuyers} />
       <FastSelling products={tempproducts}/>
-      <TotalSalesProduct TopBuyers={DummyTopBuyers}/>
+      <TotalSalesProduct TopSalesProduct={DummySalesProduct}/>
     </div>
   </div>
   

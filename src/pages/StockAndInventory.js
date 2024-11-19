@@ -9,8 +9,8 @@ import Inventory from "./Inventory";
 
 function StockAndInventory() {
 
-  
-  const dummyStockOverviewData = {
+
+const dummyStockOverviewData = {
     categories: {
       value: 5,
       message: "2 more than last year",
@@ -33,7 +33,6 @@ function StockAndInventory() {
     }
   };
 
-
 const tabsData = [
   {
     id: 1,
@@ -45,7 +44,7 @@ const tabsData = [
     id: 2,
     label: 'Inventory',
     image: ChartBarIcon ,
-    component: <Inventory />,
+    component: <Inventory stockOverviewData={dummyStockOverviewData} />,
   }
 ];
 

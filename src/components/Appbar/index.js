@@ -31,7 +31,16 @@ export default function Header() {
   const notifications = [
     {
       image: "",
-      name: "Yin",
+      name: "Semo",
+      title: "You have a new message from Metro",
+      message: "Hello there, check this new cover for iPhones.",
+      time: "10 minutes ago",
+      read: false,
+    },
+
+    {
+      image: "",
+      name: "Semo",
       title: "You have a new message from Metro",
       message: "Hello there, check this new cover for iPhones.",
       time: "10 minutes ago",

@@ -1,25 +1,23 @@
 import React from "react";
 import Appbar from "../components/Appbar/index";
-import ItemCard from "../components/ItemCard";
-import photo from "../images/Product4.jpg";
+import FlashSales from "../components/FlashDeals";
+import BestSelling from "../components/BestSelling";
+import Footer from "../components/Footer";
+import Features from "../components/Features";
+import BrowseByCategory from "../components/Categories";
 
 export default function Home() {
   return (
     <div>
       <Appbar />
-      <div className="m-3">
-        <ItemCard
-          title="JBL AA Speakers"
-          originalPrice={3000}
-          initialRating={4}
-          reviews={75}
-          discountPercentage={30}
-          imageUrl={photo}
-          onRatingChange={(newRating) => {
-            console.log("New rating:", newRating);
-            // Handle the rating change, e.g., send to an API
-          }}
-        />
+      <div>
+        <FlashSales />
+        <BrowseByCategory />
+        <BestSelling />
+        <div className="m-5 p-10">
+          <Features />
+        </div>
+        <Footer />
       </div>
     </div>
   );

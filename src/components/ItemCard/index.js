@@ -12,11 +12,9 @@ const ItemCard = ({
 }) => {
   const [rating, setRating] = useState(initialRating);
   const [hoverRating, setHoverRating] = useState(0);
-  const [hasRated, setHasRated] = useState(false);
 
   const handleRatingClick = (newRating) => {
     setRating(newRating);
-    setHasRated(true);
     if (onRatingChange) {
       onRatingChange(newRating);
     }
@@ -29,7 +27,7 @@ const ItemCard = ({
   const discount = discountPercentage ? `-${discountPercentage}%` : null;
 
   return (
-    <div className="max-w-[250px] bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+    <div className="max-w-[250px]  bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
       {" "}
       <div className="relative border-b-2 border-gray-200">
         <img src={imageUrl} alt={title} className="w-full h-40 object-cover" />
@@ -84,13 +82,9 @@ const ItemCard = ({
             ))}
             <span className="text-sm text-gray-500 ml-2">({reviews})</span>
           </div>
-
-          {hasRated && (
-            <p className="text-sm text-[#FFAD33] mt-1">Thanks for rating!</p>
-          )}
         </div>
       </div>
-      <button className="mt-1 w-full bg-black text-white py-2 text-sm font-bold rounded-b-md hover:bg-[#FFAD33] transition-colors">
+      <button className="mt-1 w-full bg-black text-white py-2 text-sm font-bold rounded-b-md hover:bg-gradient-to-b from-black to-[#F37123] transition-colors">
         Add To Cart
       </button>
     </div>

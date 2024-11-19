@@ -16,6 +16,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import StockAndInventory from "./pages/StockAndInventory";
 import Vouchers from "./pages/Vouchers";
+import WishList from "./pages/WishList";
 
 function App() {
   const isLoggedIn = true;
@@ -40,6 +41,7 @@ function App() {
           <Route path="/aboutpage" element={<AboutPage />} />
           <Route path="/forgotpw" element={<ForgotPw />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/wishlist" element={<WishList />} />
           <Route
             path="/productdetails"
             element={<ProductDetails product={sampleProduct} />}
@@ -58,7 +60,7 @@ function App() {
           {/* Admin Routes */}
           {isLoggedIn && (
             <Route path="/admin" element={<AdminLayout />}>
-               <Route index element={<DashboardLayout />} />
+              <Route index element={<DashboardLayout />} />
               <Route
                 path="stocks-and-inventory"
                 element={<StockAndInventory />}
@@ -66,10 +68,7 @@ function App() {
               <Route path="sells" element={<Sells />} />
               <Route path="delivery" element={<Delivery />} />
               <Route path="orders" element={<Orders />} />
-              <Route
-                path="vouchers"
-                element={<Vouchers />}
-              />
+              <Route path="vouchers" element={<Vouchers />} />
             </Route>
           )}
         </Routes>

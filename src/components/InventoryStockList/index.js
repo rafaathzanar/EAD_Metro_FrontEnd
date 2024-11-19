@@ -112,7 +112,7 @@ function InventoryStockList() {
           <span className="hidden sm:inline">update Stock List</span>
         </button>
         </div>
-        <div className="flex flex-wrap items-center gap-4  mb-6">
+        <div className="flex flex-wrap items-center gap-4 xl:pl-10 mb-6">
   {/* Dropdown for Items */}
   <div className="w-full sm:w-48">
     <Dropdown

@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { NavLink, Link } from "react-router-dom";
+import Notification from "../../components/Notificartion/index";
 
 import {
   Bars3Icon,
@@ -7,6 +8,7 @@ import {
   MagnifyingGlassIcon,
   ShoppingCartIcon,
   XMarkIcon,
+  BellAlertIcon,
 } from "@heroicons/react/24/outline";
 import { PromotionalContext } from "../../context/promocontext";
 import { UserCircleIcon, LogOut } from "lucide-react";
@@ -19,6 +21,23 @@ export default function Header() {
 
   const toggleDropdown = () => setDropdownOpen((prev) => !prev);
   const toggleMobileDropdown = () => setMobileDropdownOpen((prev) => !prev);
+
+  const [showNotifications, setShowNotifications] = useState(false);
+
+  const toggleNotifications = () => {
+    setShowNotifications(!showNotifications);
+  };
+
+  const notifications = [
+    {
+      image: "",
+      name: "Yin",
+      title: "You have a new message from Metro",
+      message: "Hello there, check this new cover for iPhones.",
+      time: "10 minutes ago",
+      read: false,
+    },
+  ];
 
   return (
     <div>
@@ -131,7 +150,20 @@ export default function Header() {
           </div>
 
           <div className="hidden md:flex items-center space-x-4 relative">
-            <HeartIcon className="h-6 w-6 cursor-pointer" />
+            <div></div>
+            <BellAlertIcon
+              className="h-6 w-6 cursor-pointer"
+              onClick={toggleNotifications}
+            />
+            {showNotifications && (
+              <div className="absolute top-16 right-5 z-50 w-64 sm:w-auto">
+                <Notification notifications={notifications} />
+              </div>
+            )}
+
+            <Link to="/wishlist">
+              <HeartIcon className="h-6 w-6 cursor-pointer" />
+            </Link>
             <Link to="/cart">
               <ShoppingCartIcon
                 className="h-6 w-6 cursor-pointer"

@@ -2,8 +2,8 @@ import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 
 
-function TopBuyersset(TopBuyers) {
-    if (!TopBuyers || TopBuyers.length === 0) {
+function TopSalesProductSet(TopSalesProduct) {
+    if (!TopSalesProduct || TopSalesProduct.length === 0) {
       return [];
     }
   
@@ -13,7 +13,7 @@ function TopBuyersset(TopBuyers) {
       'Cancelled': 0,
     };
   
-    TopBuyers.forEach((buyer) => {
+    TopSalesProduct.forEach((buyer) => {
       if (statusCounts[buyer.status] !== undefined) {
         statusCounts[buyer.status] += 1;
       }
@@ -29,11 +29,11 @@ function TopBuyersset(TopBuyers) {
   }
 
 
-function TotalSalesProduct({TopBuyers}) {
+function TotalSalesProduct({TopSalesProduct}) {
 
  
 
-      const data = TopBuyersset(TopBuyers )
+      const data = TopSalesProductSet(TopSalesProduct )
       const totalProducts = data.reduce((acc, cur) => acc + cur.value, 0);
 
 

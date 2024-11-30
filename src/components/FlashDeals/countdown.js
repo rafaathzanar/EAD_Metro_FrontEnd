@@ -40,23 +40,22 @@ export default function Countdown() {
   }, []);
 
   return (
-    <div className="grid grid-flow-col gap-4 text-center auto-cols-max justify-center sm:justify-start mx-auto sm:mx-0 px-4 sm:px-0 ">
-      {" "}
-      <div className="flex flex-col p-4 w-20 bg-gray-400 rounded-lg text-black">
-        <span className="font-bold text-2xl">{days}</span>
-        <span className="text-base">Days</span>
+    <div className="grid grid-flow-col gap-2 sm:gap-4 text-center auto-cols-max justify-center sm:justify-start mx-auto sm:mx-0 px-2 sm:px-0">
+      <div className="flex flex-col p-2 sm:p-4 w-14 sm:w-20 bg-gray-400 rounded-lg text-black">
+        <span className="font-bold text-lg sm:text-2xl">{days}</span>
+        <span className="text-xs sm:text-base">Days</span>
       </div>
-      <div className="flex flex-col p-4 w-20 bg-gray-400  rounded-lg text-black">
-        <span className="font-bold text-2xl">{hours}</span>
-        <span className="text-base">Hours</span>
+      <div className="flex flex-col p-2 sm:p-4 w-14 sm:w-20 bg-gray-400 rounded-lg text-black">
+        <span className="font-bold text-lg sm:text-2xl">{hours}</span>
+        <span className="text-xs sm:text-base">Hours</span>
       </div>
-      <div className="flex flex-col p-4 w-20 bg-gray-400 rounded-lg text-black">
-        <span className="font-bold text-2xl">{minutes}</span>
-        <span className="text-base">Min</span>
+      <div className="flex flex-col p-2 sm:p-4 w-14 sm:w-20 bg-gray-400 rounded-lg text-black">
+        <span className="font-bold text-lg sm:text-2xl">{minutes}</span>
+        <span className="text-xs sm:text-base">Min</span>
       </div>
-      <div className="flex flex-col p-4 w-20 bg-gray-400  rounded-lg text-black">
-        <span className="font-bold text-2xl">{seconds}</span>
-        <span className="text-base">Sec</span>
+      <div className="flex flex-col p-2 sm:p-4 w-14 sm:w-20 bg-gray-400 rounded-lg text-black">
+        <span className="font-bold text-lg sm:text-2xl">{seconds}</span>
+        <span className="text-xs sm:text-base">Sec</span>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ItemCard from "../../components/ItemCard/index";
 import photo from "../../images/Product4.jpg";
+import { Link } from "react-router-dom";
 
 const BestSelling = () => {
   const products = [
@@ -41,19 +42,36 @@ const BestSelling = () => {
       discountPercentage: 25,
       imageUrl: "../../images/Product4.jpg",
     },
+    {
+      id: 5,
+      title: "Sony PS5 Controller",
+      originalPrice: 8000,
+      initialRating: 5,
+      reviews: 120,
+      discountPercentage: 20,
+      imageUrl: "../../images/Product4.jpg",
+    },
+    {
+      id: 6,
+      title: "Apple Watch Series 6",
+      originalPrice: 50000,
+      initialRating: 5,
+      reviews: 200,
+      discountPercentage: 15,
+      imageUrl: "../../images/Product4.jpg",
+    },
   ];
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [isMobile, setIsMobile] = useState(false);
-  const itemsPerPage = 1;
+  const [itemsPerPage, setItemsPerPage] = useState(4);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768); // Check if the viewport is mobile size
+      setItemsPerPage(window.innerWidth <= 768 ? 1 : 4); // Show 1 item per page on mobile, 4 on desktop
     };
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
+    handleResize(); // Set on initial render
+    window.addEventListener("resize", handleResize); // Update on resize
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -61,9 +79,7 @@ const BestSelling = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentProducts = isMobile
-    ? products.slice(indexOfFirstItem, indexOfLastItem)
-    : products; // Show all products if not mobile view
+  const currentProducts = products.slice(indexOfFirstItem, indexOfLastItem);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
@@ -75,7 +91,6 @@ const BestSelling = () => {
 
   const handleRatingChange = (productId, newRating) => {
     console.log(`Product ${productId} new rating:`, newRating);
-    // Handle the rating change, e.g., send to an API
   };
 
   return (
@@ -87,7 +102,7 @@ const BestSelling = () => {
         </div>
 
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
-          <h2 className="text-2xl font-bold pb-3">Best Selling Product</h2>
+          <h2 className="text-2xl font-bold pb-3">Best Selling Products</h2>
         </div>
       </div>
 
@@ -108,39 +123,37 @@ const BestSelling = () => {
         ))}
       </div>
 
-      {isMobile && (
-        <div className="flex justify-center items-center mt-4 gap-4">
-          <button
-            onClick={handlePrevPage}
-            disabled={currentPage === 1}
-            className={`p-2 rounded-full ${
-              currentPage === 1
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : "bg-orange-500 text-white hover:bg-orange-600"
-            }`}
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-          <span className="text-gray-700">
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-            className={`p-2 rounded-full ${
-              currentPage === totalPages
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : "bg-orange-500 text-white hover:bg-orange-600"
-            }`}
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
-      )}
+      <div className="flex justify-center items-center mt-6 gap-4">
+        <button
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+          className={`p-2 rounded-full ${
+            currentPage === 1
+              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+              : "bg-orange-500 text-white hover:bg-orange-600"
+          }`}
+        >
+          <ChevronLeft className="w-4 h-4" />
+        </button>
+        <span className="text-gray-700">
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+          className={`p-2 rounded-full ${
+            currentPage === totalPages
+              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+              : "bg-orange-500 text-white hover:bg-orange-600"
+          }`}
+        >
+          <ChevronRight className="w-4 h-4" />
+        </button>
+      </div>
 
       <div className="flex justify-center mt-8">
         <button className="px-6 py-2 my-2 bg-[#FFAD33] text-white rounded hover:bg-orange-600">
-          View All Products
+          <Link to="/bestselling">View All Products</Link>{" "}
         </button>
       </div>
     </div>

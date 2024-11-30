@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 import Notification from "../../components/Notificartion/index";
 
@@ -12,6 +12,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { PromotionalContext } from "../../context/promocontext";
 import { UserCircleIcon, LogOut } from "lucide-react";
+import UserService from "../../services/UserService";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -47,6 +48,31 @@ export default function Header() {
       read: false,
     },
   ];
+
+  const [user, setUser] = useState(null); // Store user details
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const accessToken = localStorage.getItem("accessToken"); // Assuming token is stored here
+        if (!accessToken) {
+          console.error("No access token found");
+          return;
+        }
+
+        const result = await UserService.getUserById(accessToken);
+        if (result.success) {
+          setUser(result.data); // Ensure result.data contains `name` and `email`
+        } else {
+          console.error("Failed to fetch user:", result.error);
+        }
+      } catch (error) {
+        console.error("Error in fetchUser:", error.message);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   return (
     <div>
@@ -103,9 +129,11 @@ export default function Header() {
               {mobileDropdownOpen && (
                 <div className="absolute right-0 z-10 mt-2 bg-white divide-y divide-gray-300 rounded-sm shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                   <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                    <div className="font-bold text-xl">Semo</div>
+                    <div className="font-bold text-xl">
+                      {user?.name || "Guest"}
+                    </div>
                     <div className="font-medium truncate">
-                      name@flowbite.com
+                      {user?.email || "No email"}
                     </div>
                   </div>
                   <ul
@@ -139,7 +167,10 @@ export default function Header() {
                   </ul>
                   <div className="py-1">
                     <Link
-                      to="/signout"
+                      onClick={() => {
+                        localStorage.removeItem("accessToken");
+                        window.location.href = "/signin";
+                      }}
                       className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white flex items-center space-x-2"
                     >
                       <LogOut className="h-5 w-5" />
@@ -191,9 +222,11 @@ export default function Header() {
                   className="absolute right-0 z-10 mt-2 bg-white divide-y divide-gray-300 rounded-sm shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
                 >
                   <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                    <div className="font-bold text-xl">Semo</div>
+                    <div className="font-bold text-xl">
+                      {user?.name || "Guest"}
+                    </div>
                     <div className="font-medium truncate">
-                      name@flowbite.com
+                      {user?.email || "No email"}
                     </div>
                   </div>
                   <ul
@@ -227,7 +260,10 @@ export default function Header() {
                   </ul>
                   <div className="py-1">
                     <Link
-                      to="/signout"
+                      onClick={() => {
+                        localStorage.removeItem("accessToken");
+                        window.location.href = "/signin";
+                      }}
                       className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white flex items-center space-x-2"
                     >
                       <LogOut className="h-5 w-5" />

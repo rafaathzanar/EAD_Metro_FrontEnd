@@ -1,69 +1,70 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ItemCard from "../../components/ItemCard/index";
-import photo from "../../images/Product4.jpg";
 import { Link } from "react-router-dom";
+import UserService from "../../services/UserService";
 
 const BestSelling = () => {
-  const products = [
-    {
-      id: 1,
-      title: "HAVIT HV-G92 Gamepad",
-      originalPrice: 20000,
-      initialRating: 5,
-      reviews: 88,
-      discountPercentage: 40,
-      imageUrl: "/images/Product4.jpg",
-    },
-    {
-      id: 2,
-      title: "JBL AA Speakers",
-      originalPrice: 3000,
-      initialRating: 4,
-      reviews: 75,
-      discountPercentage: 35,
-      imageUrl: "../../images/Product4.jpg",
-    },
-    {
-      id: 3,
-      title: "Samsung Gear S3",
-      originalPrice: 16000,
-      initialRating: 5,
-      reviews: 99,
-      discountPercentage: 30,
-      imageUrl: "../../images/Product4.jpg",
-    },
-    {
-      id: 4,
-      title: "JBL T450 AA",
-      originalPrice: 1600,
-      initialRating: 5,
-      reviews: 99,
-      discountPercentage: 25,
-      imageUrl: "../../images/Product4.jpg",
-    },
-    {
-      id: 5,
-      title: "Sony PS5 Controller",
-      originalPrice: 8000,
-      initialRating: 5,
-      reviews: 120,
-      discountPercentage: 20,
-      imageUrl: "../../images/Product4.jpg",
-    },
-    {
-      id: 6,
-      title: "Apple Watch Series 6",
-      originalPrice: 50000,
-      initialRating: 5,
-      reviews: 200,
-      discountPercentage: 15,
-      imageUrl: "../../images/Product4.jpg",
-    },
-  ];
+  // const products = [
+  //   {
+  //     id: 1,
+  //     name: "HAVIT HV-G92 Gamepad",
+  //     unitPrice: 20000,
+  //     initialRating: 5,
+  //     reviews: 88,
+  //     discount: 40,
+  //     image: "/images/Product4.jpg",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "JBL AA Speakers",
+  //     unitPrice: 3000,
+  //     initialRating: 4,
+  //     reviews: 75,
+  //     discount: 35,
+  //     image: "../../images/Product4.jpg",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Samsung Gear S3",
+  //     unitPrice: 16000,
+  //     initialRating: 5,
+  //     reviews: 99,
+  //     discount: 30,
+  //     image: "../../images/Product4.jpg",
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "JBL T450 AA",
+  //     unitPrice: 1600,
+  //     initialRating: 5,
+  //     reviews: 99,
+  //     discount: 25,
+  //     image: "../../images/Product4.jpg",
+  //   },
+  //   {
+  //     id: 5,
+  //     name: "Sony PS5 Controller",
+  //     unitPrice: 8000,
+  //     initialRating: 5,
+  //     reviews: 120,
+  //     discount: 20,
+  //     image: "../../images/Product4.jpg",
+  //   },
+  //   {
+  //     id: 6,
+  //     name: "Apple Watch Series 6",
+  //     unitPrice: 50000,
+  //     initialRating: 5,
+  //     reviews: 200,
+  //     discount: 15,
+  //     image: "../../images/Product4.jpg",
+  //   },
+  // ];
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(4);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -89,9 +90,22 @@ const BestSelling = () => {
     if (currentPage > 1) setCurrentPage((prev) => prev - 1);
   };
 
-  const handleRatingChange = (productId, newRating) => {
-    console.log(`Product ${productId} new rating:`, newRating);
+  // const handleRatingChange = (productId, newRating) => {
+  //   console.log(`Product ${productId} new rating:`, newRating);
+  // };
+
+  const getAllProduct = async () => {
+    const response = await UserService.getAllProduct();
+    if (response.success) {
+      setProducts(response.data);
+    } else {
+      console.error("Failed to fetch products:", response.error);
+    }
   };
+
+  useEffect(() => {
+    getAllProduct();
+  }, []);
 
   return (
     <div className="w-full max-w-6xl mx-auto p-3 mt-5 border-b-2 border-gray-200">
@@ -107,20 +121,30 @@ const BestSelling = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mx-auto px-4 max-w-screen-xl place-items-center">
-        {currentProducts.map((product) => (
-          <ItemCard
-            key={product.id}
-            title={product.title}
-            originalPrice={product.originalPrice}
-            initialRating={product.initialRating}
-            reviews={product.reviews}
-            discountPercentage={product.discountPercentage}
-            imageUrl={photo}
-            onRatingChange={(newRating) =>
-              handleRatingChange(product.id, newRating)
-            }
-          />
-        ))}
+        {currentProducts.length > 0 ? (
+          currentProducts.map((product) => (
+            <Link key={product.id} to={`/productdetails/${product.id}`}>
+              <ItemCard
+                key={product.id}
+                id={product.id}
+                name={product.name}
+                unitPrice={product.unitPrice}
+                initialRating={product.initialRating}
+                reviews={product.reviews}
+                discount={product.discount}
+                image={product.image}
+                skuCode={product.skuCode}
+                // onRatingChange={(newRating) =>
+                //   handleRatingChange(product.id, newRating)
+                // }
+              />
+            </Link>
+          ))
+        ) : (
+          <div className="col-span-full text-center text-lg text-gray-600">
+            No products available.
+          </div>
+        )}
       </div>
 
       <div className="flex justify-center items-center mt-6 gap-4">

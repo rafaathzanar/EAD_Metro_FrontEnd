@@ -20,3 +20,5 @@ export const GET_SINGLE_PRODUCT = PRODUCT_ENDPOINT + "api/product/getById/";
 export const ADD_NEW_PRODUCT = PRODUCT_ENDPOINT + "api/product/addProduct/";
 export const UPDATE_PRODUCT = PRODUCT_ENDPOINT + "api/product/updateProduct/";
 export const DELETE_PRODUCT = PRODUCT_ENDPOINT + "api/product/deleteProduct/";
+
+//order endpoints

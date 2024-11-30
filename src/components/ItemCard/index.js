@@ -27,7 +27,7 @@ const ItemCard = ({
   const discount = discountPercentage ? `-${discountPercentage}%` : null;
 
   return (
-    <div className="max-w-[250px]  bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+    <div className="w-[250px]  bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
       {" "}
       <div className="relative border-b-2 border-gray-200">
         <img src={imageUrl} alt={title} className="w-full h-40 object-cover" />

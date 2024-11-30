@@ -8,6 +8,8 @@ export const USER_LOGIN = USER_ENDPOINT + "auth/login";
 export const USER_REGISTER = USER_ENDPOINT + "auth/register";
 export const GET_SINGLE_USER = USER_ENDPOINT + "auth/retriveByUserId";
 export const GET_All_USERS = USER_ENDPOINT + "users/all";
+export const GET_SINGLE_USER2 = USER_ENDPOINT + "users/get-by-id";
+
 
 export const GET_LOGGED_IN_INFO =
   USER_ENDPOINT + "users/get-logged-in-profile-info";

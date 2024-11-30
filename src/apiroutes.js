@@ -1,6 +1,6 @@
-export const USER_ENDPOINT = "http://213.35.109.133:8082/";
+export const USER_ENDPOINT = "http://213.35.109.133:8089/";
 export const PRODUCT_ENDPOINT = "http://213.35.109.133:8080/";
-export const ORDER_ENDPOINT = "http://213.35.109.133:8082/";
+export const ORDER_ENDPOINT = "http://213.35.109.133:8091/";
 export const INVENTORY_ENDPOINT = "http://213.35.109.133:8082/";
 
 //user management endpoints

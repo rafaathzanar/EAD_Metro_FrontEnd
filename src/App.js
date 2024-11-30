@@ -17,6 +17,9 @@ import SignUp from "./pages/SignUp";
 import StockAndInventory from "./pages/StockAndInventory";
 import Vouchers from "./pages/Vouchers";
 import WishList from "./pages/WishList";
+import Checkout from "./pages/Checkout";
+import FlashSalesPage from "./pages/FlashSalesPage";
+import BestSelling from "./pages/BestSelling";
 
 function App() {
   const isLoggedIn = true;
@@ -42,10 +45,14 @@ function App() {
           <Route path="/forgotpw" element={<ForgotPw />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<WishList />} />
+          <Route path="/flashsales" element={<FlashSalesPage />} />
+          <Route path="/bestselling" element={<BestSelling />} />
+
           <Route
             path="/productdetails"
             element={<ProductDetails product={sampleProduct} />}
           />
+          <Route path="/checkout" element={<Checkout />} />
 
           {/* <Route
             path="admin/vouchers"

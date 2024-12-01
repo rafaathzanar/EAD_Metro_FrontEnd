@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import React, { useState } from "react";
-import { PlusIcon } from "@heroicons/react/24/solid";
+//import { PlusIcon } from "@heroicons/react/24/solid";
 import Modal from "../Modal/index.js";
 import TextField from "@mui/material/TextField";
 import { Grid2, Box, Button } from "@mui/material";
@@ -9,7 +9,7 @@ function StockCategories({ categories }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newCategory, setNewCategory] = useState("");
 
-  const openModal = () => setIsModalOpen(true);
+  //const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
   const sxSettingTextInput = {
@@ -59,17 +59,17 @@ function StockCategories({ categories }) {
 
   const sxsettingBox = {
     width: "100%",
-margin: "auto",
-position: "absolute",
-top: "50%",
-left: "50%",
-transform: "translate(-50%, -50%)", // Center horizontally and vertically
-padding: "20px",
-bgcolor: "background.paper",
-borderRadius: "8px",
-border: "1px solid orange",
-boxShadow: 24,
-};
+    margin: "auto",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)", // Center horizontally and vertically
+    padding: "20px",
+    bgcolor: "background.paper",
+    borderRadius: "8px",
+    border: "1px solid orange",
+    boxShadow: 24,
+  };
 
   const handleAddCatagory = () => {
     console.log("New Category:", newCategory);
@@ -83,13 +83,13 @@ boxShadow: 24,
         <h2 className="md:text-3xl font-semibold text-gray-800 sm:text-base">
           Categories
         </h2>
-        <button
+        {/* <button
           className="bg-[#f29425] hover:from-orange-400 hover:to-yellow-300 text-white font-semibold py-2 px-4 sm:py-3 sm:px-6 rounded-full shadow-xl transition-transform hover:scale-105 flex items-center"
           onClick={openModal}
         >
           <PlusIcon className="h-5 w-5 sm:h-6 sm:w-6 mr-2" />
           <span className="hidden sm:inline">Add Category</span>
-        </button>
+        </button> */}
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {categories.map((category, index) => (
@@ -102,9 +102,7 @@ boxShadow: 24,
         ))}
       </div>
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <Box
-           sx={sxsettingBox}
-        >
+        <Box sx={sxsettingBox}>
           <Grid2
             container
             spacing={2}

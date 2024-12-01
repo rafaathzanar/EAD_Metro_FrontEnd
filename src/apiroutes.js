@@ -7,6 +7,9 @@ export const INVENTORY_ENDPOINT = "http://213.35.109.133:8082/";
 export const USER_LOGIN = USER_ENDPOINT + "auth/login";
 export const USER_REGISTER = USER_ENDPOINT + "auth/register";
 export const GET_SINGLE_USER = USER_ENDPOINT + "auth/retriveByUserId";
+export const GET_All_USERS = USER_ENDPOINT + "users/all";
+export const GET_SINGLE_USER2 = USER_ENDPOINT + "users/get-by-id";
+
 
 export const GET_LOGGED_IN_INFO =
   USER_ENDPOINT + "users/get-logged-in-profile-info";
@@ -16,9 +19,10 @@ export const DELETE_SINGLE_USER = USER_ENDPOINT + "users/delete/:id";
 
 //product endpoints
 export const GET_ALL_PRODUCTS = PRODUCT_ENDPOINT + "api/product/retrieveAll";
-export const GET_SINGLE_PRODUCT = PRODUCT_ENDPOINT + "api/product/getById";
-export const ADD_NEW_PRODUCT = PRODUCT_ENDPOINT + "api/product/addProduct/";
-export const UPDATE_PRODUCT = PRODUCT_ENDPOINT + "api/product/updateProduct/";
-export const DELETE_PRODUCT = PRODUCT_ENDPOINT + "api/product/deleteProduct/";
+export const GET_SINGLE_PRODUCT = PRODUCT_ENDPOINT + "api/product/getById/";
+export const ADD_NEW_PRODUCT = PRODUCT_ENDPOINT + "api/product/addProduct";
+export const UPDATE_PRODUCT = PRODUCT_ENDPOINT + "api/product/updateProduct";
+export const DELETE_PRODUCT = PRODUCT_ENDPOINT + "api/product/deleteProduct";
 
 //order endpoints
+export const GET_ALL_ORDERS = ORDER_ENDPOINT + "api/order/getOrders";

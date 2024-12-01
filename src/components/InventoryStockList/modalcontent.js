@@ -14,44 +14,83 @@ import { styled } from "@mui/material/styles";
 const Input = styled("input")({
   display: "none",
 });
+import * as ApiRoutes from "../../apiroutes.js";
+import axios from "axios";
+import CircularProgress from '@mui/material/CircularProgress';
 
-function Modalcontent({ closeModal , onAddItem , dropdownSelections }) {
+
+function Modalcontent({ closeModal  , dropdownSelections }) {
   const [productName, setProductName] = useState("");
-  const [productID, setProductID] = useState("");
   const [category, setCategory] = useState("");
   const [qtyPurchased, setQtyPurchased] = useState("");
   const [unitCost, setUnitCost] = useState("");
-  //const [unitPrice, setUnitPrice] = useState("");
+  const [unitPrice, setUnitPrice] = useState("");
   const [supplier, setSupplier] = useState("");
   const [image, setImage] = useState(null);
+  const [description, setDescription] = useState("");
+  const [ratingCount, setRatingCount] = useState(0);
+  const [rating, setRating] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImage(file);
+      setImage(file); 
+    } else {
+      console.error("Invalid file selected.");
     }
   };
+  
 
   const calculateTotalAmount = () => {
     return qtyPurchased && unitCost ? qtyPurchased * unitCost : 0;
   };
 
-  const handleSubmit = () => {
-    const formData = {
-      productName,
-      productID,
-      category,
-      qtyPurchased,
-      unitCost,
-    //  unitPrice,
-      supplier,
-      image,
+  const handleSubmit = async () => {
+    if (!productName || !unitPrice || !unitCost || !qtyPurchased || !category || !supplier || !image) {
+      alert("Please fill in all required fields and upload an image.");
+      return;
+    }
+
+    const generateSkuCode = async(name, category) => {
+      const formattedName = name.replace(/\s+/g, '').toUpperCase(); // Remove spaces and convert to uppercase
+      const formattedCategory = category.replace(/\s+/g, '').toUpperCase(); // Remove spaces and convert to uppercase
+      const currentDate = new Date().toISOString().slice(0, 10).replace(/-/g, ''); // Format as YYYYMMDD
+      return `${formattedName}-${formattedCategory}-${currentDate}`;
     };
 
-    onAddItem(formData);
-
-    closeModal();
+    const skuCode = await generateSkuCode(productName, category);
+  
+    const formdata = new FormData();
+    formdata.append("image", image);
+    formdata.append("name", productName);
+    formdata.append("unitPrice", unitPrice);
+    formdata.append("unitCost", unitCost);
+    formdata.append("discount", discount);
+    formdata.append("category", category);
+    formdata.append("supplierName", supplier);
+    formdata.append("quantity", qtyPurchased);
+    formdata.append("skuCode", skuCode);
+    formdata.append("description", description);
+    formdata.append("ratingCount", ratingCount);
+    formdata.append("rating", rating);
+  
+    try {
+        setIsLoading(true);
+      const response = await axios.post(ApiRoutes.ADD_NEW_PRODUCT, formdata, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("Response:", response.data);
+      setIsLoading(false);
+      closeModal();
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
+  
 
   const sxSetting = {
     "& .MuiOutlinedInput-root": {
@@ -74,7 +113,7 @@ function Modalcontent({ closeModal , onAddItem , dropdownSelections }) {
   };
 
   return (
-    <div>
+    !isLoading ? (<div>
       <div className="bg-white rounded-lg p-6 md-mt-10  w-full max-w-5xl mx-auto">
         <h2 className="text-2xl font-semibold text-gray-800 mb-6">
           Add New Item
@@ -167,16 +206,6 @@ function Modalcontent({ closeModal , onAddItem , dropdownSelections }) {
               </Grid2>
               <Grid2 size={{ xs: 12, md: 12, lg: 6 }}>
                 <TextField
-                  label="Enter ID"
-                  variant="outlined"
-                  fullWidth
-                  value={productID}
-                  onChange={(e) => setProductID(e.target.value)}
-                  sx={sxSetting}
-                />
-              </Grid2>
-              <Grid2 size={{ xs: 12, md: 12, lg: 6 }}>
-                <TextField
                   select
                   label="Select Category"
                   variant="outlined"
@@ -186,8 +215,8 @@ function Modalcontent({ closeModal , onAddItem , dropdownSelections }) {
                   sx={sxSetting}
                   >
                   {dropdownSelections.map((option, index) => (
-                    <MenuItem key={index} value={option.label}>
-                      {option.label}
+                    <MenuItem key={index} value={option.name}>
+                      {option.name}
                     </MenuItem>
                   ))}
                 </TextField>
@@ -230,6 +259,16 @@ function Modalcontent({ closeModal , onAddItem , dropdownSelections }) {
               </Grid2>
               <Grid2 size={{ xs: 12, md: 12, lg: 6 }}>
                 <TextField
+                  label="Enter Unit Price"
+                  variant="outlined"
+                  fullWidth
+                  value={unitPrice}
+                  onChange={(e) => setUnitPrice(e.target.value)}
+                  sx={sxSetting}
+                />
+              </Grid2>
+              <Grid2 size={{ xs: 12, md: 12, lg: 6 }}>
+                <TextField
                   label="Enter Supplier Name"
                   variant="outlined"
                   fullWidth
@@ -238,6 +277,47 @@ function Modalcontent({ closeModal , onAddItem , dropdownSelections }) {
                   sx={sxSetting}
                 />
               </Grid2>
+              <Grid2 size={{ xs: 12, md: 12, lg: 6 }}>
+                <TextField
+                  label="Enter Description"
+                  variant="outlined"
+                  fullWidth
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  sx={sxSetting}
+                />
+              </Grid2>
+              <Grid2 size={{ xs: 12, md: 12, lg: 6 }}>
+                <TextField
+                  label="Enter Rating"
+                  variant="outlined"
+                  fullWidth
+                  value={rating}
+                  onChange={(e) => setRating(e.target.value)}
+                  sx={sxSetting}
+                />
+              </Grid2>
+              <Grid2 size={{ xs: 12, md: 12, lg: 6 }}>
+                <TextField
+                  label="Rating Count"
+                  variant="outlined"
+                  fullWidth
+                  value={ratingCount}
+                  onChange={(e) => setRatingCount(e.target.value)}
+                  sx={sxSetting}
+                />
+              </Grid2>
+              <Grid2 size={{ xs: 12, md: 12, lg: 6 }}>
+                <TextField
+                  label="Enter Discount"
+                  variant="outlined"
+                  fullWidth
+                  value={discount}
+                  onChange={(e) => setDiscount(e.target.value)}
+                  sx={sxSetting}
+                />
+              </Grid2>
+              
 
               {/* </div> */}
             </Grid2>
@@ -261,6 +341,11 @@ function Modalcontent({ closeModal , onAddItem , dropdownSelections }) {
         </button>
       </div>
     </div>
+    ) : (
+      <div className="flex items-center justify-center h-96">
+        <CircularProgress sx={{color:"orange"}}/>
+      </div>
+    )
   );
 }
 

@@ -30,7 +30,7 @@ function TotalSale({ totalSales }) {
           {displayedSales ?? 0}
         </div>
         <div className="text-gray-600 mt-2">Total Sales</div>
-        <div className="text-gray-600 text-xs mt-2">Last One Month</div>
+        <div className="text-gray-600 text-xs mt-2"></div>
       </div>
 
       <div className="flex flex-col items-center ml-auto space-y-2 mb-6" aria-label="Document Icon">

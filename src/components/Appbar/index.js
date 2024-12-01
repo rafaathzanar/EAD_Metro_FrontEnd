@@ -49,12 +49,12 @@ export default function Header() {
     },
   ];
 
-  const [user, setUser] = useState(null); // Store user details
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const accessToken = localStorage.getItem("accessToken"); // Assuming token is stored here
+        const accessToken = localStorage.getItem("accessToken");
         if (!accessToken) {
           console.error("No access token found");
           return;
@@ -62,7 +62,7 @@ export default function Header() {
 
         const result = await UserService.getUserById(accessToken);
         if (result.success) {
-          setUser(result.data); // Ensure result.data contains `name` and `email`
+          setUser(result.data);
         } else {
           console.error("Failed to fetch user:", result.error);
         }

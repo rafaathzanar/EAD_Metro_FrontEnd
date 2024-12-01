@@ -92,6 +92,28 @@ class UserService {
     }
   };
 
+  deleteUserById = async (userId, accessToken) => {
+    try {
+      const response = await axios.delete(
+        apiroutes.DELETE_SINGLE_USER.replace(":id", userId),
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      console.log("Delete user successful:", response.data);
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error(
+        "Error deleting user:",
+        error.response?.data || error.message
+      );
+      return { success: false, error: error.response?.data || error.message };
+    }
+  };
+
   updateProductById = async () => {
     try {
       const response = await axios.put(apiroutes.UPDATE_PRODUCT);

@@ -5,6 +5,7 @@ import Footer from "../components/Footer/index";
 import Reviews from "../components/Reviews";
 import RatingGraph from "../components/Reviews/ratingGraph";
 import UserService from "../services/UserService";
+import Spinner from "../components/Spinner";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -12,7 +13,7 @@ const ProductDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState("description");
-  const [quantity, setQuantity] = useState(1); // Quantity state
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -45,8 +46,17 @@ const ProductDetails = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Spinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
 
   const calculatedPrice = product?.discount
     ? Math.round(

@@ -5,120 +5,22 @@ import Appbar from "../components/Appbar/index";
 import Footer from "../components/Footer";
 import UserService from "../services/UserService";
 import { Link } from "react-router-dom";
+import Spinner from "../components/Spinner";
 
 const FlashSalesPage = () => {
-  // const products = [
-  //   {
-  //     id: 1,
-  //     title: "HAVIT HV-G92 Gamepad",
-  //     originalPrice: 20000,
-  //     initialRating: 5,
-  //     reviews: 88,
-  //     discountPercentage: 40,
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "JBL AA Speakers",
-  //     originalPrice: 3000,
-  //     initialRating: 4,
-  //     reviews: 75,
-  //     discountPercentage: 35,
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "Samsung Gear S3",
-  //     originalPrice: 16000,
-  //     initialRating: 5,
-  //     reviews: 99,
-  //     discountPercentage: 30,
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "JBL T450 AA",
-  //     originalPrice: 1600,
-  //     initialRating: 5,
-  //     reviews: 99,
-  //     discountPercentage: 25,
-  //   },
-  //   {
-  //     id: 5,
-  //     title: "Sony PS5 Controller",
-  //     originalPrice: 8000,
-  //     initialRating: 5,
-  //     reviews: 120,
-  //     discountPercentage: 20,
-  //   },
-  //   {
-  //     id: 6,
-  //     title: "Apple Watch Series 6",
-  //     originalPrice: 50000,
-  //     initialRating: 5,
-  //     reviews: 200,
-  //     discountPercentage: 15,
-  //   },
-  //   {
-  //     id: 7,
-  //     title: "Razer Mouse",
-  //     originalPrice: 8000,
-  //     initialRating: 5,
-  //     reviews: 50,
-  //     discountPercentage: 20,
-  //   },
-  //   {
-  //     id: 8,
-  //     title: "Dell Monitor",
-  //     originalPrice: 25000,
-  //     initialRating: 4,
-  //     reviews: 140,
-  //     discountPercentage: 18,
-  //   },
-  //   {
-  //     id: 9,
-  //     title: "Logitech Keyboard",
-  //     originalPrice: 5000,
-  //     initialRating: 4,
-  //     reviews: 70,
-  //     discountPercentage: 10,
-  //   },
-  //   {
-  //     id: 10,
-  //     title: "Anker Charger",
-  //     originalPrice: 1500,
-  //     initialRating: 5,
-  //     reviews: 200,
-  //     discountPercentage: 12,
-  //   },
-  //   {
-  //     id: 11,
-  //     title: "Beats Headphones",
-  //     originalPrice: 12000,
-  //     initialRating: 5,
-  //     reviews: 99,
-  //     discountPercentage: 25,
-  //   },
-  //   {
-  //     id: 12,
-  //     title: "Xiaomi Smart Band",
-  //     originalPrice: 3000,
-  //     initialRating: 4,
-  //     reviews: 150,
-  //     discountPercentage: 30,
-  //   },
-  // ];
-
   const [products, setProducts] = useState([]);
-
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(12);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 768) {
-        setItemsPerPage(1); // Small screens (1 card per row, 1 row)
+        setItemsPerPage(1);
       } else if (window.innerWidth <= 1024) {
-        setItemsPerPage(4); // Medium screens (2 cards per row, 2 rows)
+        setItemsPerPage(4);
       } else {
-        setItemsPerPage(12); // Large screens (4 cards per row, 3 rows)
+        setItemsPerPage(12);
       }
     };
 
@@ -141,11 +43,18 @@ const FlashSalesPage = () => {
   };
 
   const getAllProduct = async () => {
-    const response = await UserService.getAllProduct();
-    if (response.success) {
-      setProducts(response.data);
-    } else {
-      console.error("Failed to fetch products:", response.error);
+    setLoading(true); // Start loading
+    try {
+      const response = await UserService.getAllProduct();
+      if (response.success) {
+        setProducts(response.data);
+      } else {
+        console.error("Failed to fetch products:", response.error);
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -161,32 +70,38 @@ const FlashSalesPage = () => {
           <div className="w-4 h-10 rounded-sm bg-gradient-to-b from-black to-orange-500" />
           <h2 className="text-2xl font-bold text-orange-500">Flash Sales</h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mx-auto px-4 max-w-screen-xl place-items-center">
-          {currentProducts.map((product) => (
-            <Link key={product.id} to={`/productdetails/${product.id}`}>
-              <ItemCard
-                key={product.id}
-                id={product.id}
-                name={product.name}
-                unitPrice={product.unitPrice}
-                initialRating={product.initialRating}
-                reviews={product.reviews}
-                discount={product.discount}
-                image={product.image}
-                skuCode={product.skuCode}
-                // onRatingChange={(newRating) =>
-                //   handleRatingChange(product.id, newRating)
-                // }
-              />
-            </Link>
-          ))}
-        </div>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPrev={handlePrev}
-          onNext={handleNext}
-        />
+
+        {loading ? (
+          <div className="flex justify-center items-center h-96">
+            <Spinner />
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mx-auto px-4 max-w-screen-xl place-items-center">
+              {currentProducts.map((product) => (
+                <Link key={product.id} to={`/productdetails/${product.id}`}>
+                  <ItemCard
+                    key={product.id}
+                    id={product.id}
+                    name={product.name}
+                    unitPrice={product.unitPrice}
+                    initialRating={product.initialRating}
+                    reviews={product.reviews}
+                    discount={product.discount}
+                    image={product.image}
+                    skuCode={product.skuCode}
+                  />
+                </Link>
+              ))}
+            </div>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPrev={handlePrev}
+              onNext={handleNext}
+            />
+          </>
+        )}
       </div>
       <Footer />
     </div>

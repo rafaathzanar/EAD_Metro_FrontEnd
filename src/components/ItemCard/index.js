@@ -2,15 +2,13 @@ import React, { useState } from "react";
 import { Heart } from "lucide-react";
 
 const ItemCard = ({
-  id,
   name,
   image,
   unitPrice,
   discount,
-  skuCode,
   initialRating = 0,
-  reviews,
   onRatingChange,
+  ratingCount,
 }) => {
   const [rating, setRating] = useState(initialRating);
   const [hoverRating, setHoverRating] = useState(0);
@@ -82,7 +80,7 @@ const ItemCard = ({
                 </svg>
               </button>
             ))}
-            <span className="text-sm text-gray-500 ml-2">({reviews})</span>
+            <span className="text-sm text-gray-500 ml-2">({ratingCount})</span>
           </div>
         </div>
       </div>

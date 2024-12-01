@@ -5,6 +5,7 @@ import Appbar from "../components/Appbar/index";
 import Footer from "../components/Footer";
 import UserService from "../services/UserService";
 import { Link } from "react-router-dom";
+import Spinner from "../components/Spinner";
 
 const BestSellingPage = () => {
   // const products = [
@@ -109,6 +110,7 @@ const BestSellingPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(12);
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -140,11 +142,18 @@ const BestSellingPage = () => {
   };
 
   const getAllProduct = async () => {
-    const response = await UserService.getAllProduct();
-    if (response.success) {
-      setProducts(response.data);
-    } else {
-      console.error("Failed to fetch products:", response.error);
+    setLoading(true); // Set loading to true before fetching
+    try {
+      const response = await UserService.getAllProduct();
+      if (response.success) {
+        setProducts(response.data);
+      } else {
+        console.error("Failed to fetch products:", response.error);
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -162,32 +171,35 @@ const BestSellingPage = () => {
             Best Selling products
           </h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mx-auto px-4 max-w-screen-xl place-items-center">
-          {currentProducts.length > 0 ? (
-            currentProducts.map((product) => (
-              <Link key={product.id} to={`/productdetails/${product.id}`}>
-                <ItemCard
-                  key={product.id}
-                  id={product.id}
-                  name={product.name}
-                  unitPrice={product.unitPrice}
-                  initialRating={product.initialRating}
-                  reviews={product.reviews}
-                  discount={product.discount}
-                  image={product.image}
-                  skuCode={product.skuCode}
-                  // onRatingChange={(newRating) =>
-                  //   handleRatingChange(product.id, newRating)
-                  // }
-                />
-              </Link>
-            ))
-          ) : (
-            <div className="col-span-full text-center text-lg text-gray-600">
-              No products available.
-            </div>
-          )}
-        </div>
+        {loading ? (
+          <div className="flex justify-center items-center h-screen">
+            <Spinner />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mx-auto px-4 max-w-screen-xl place-items-center">
+            {currentProducts.length > 0 ? (
+              currentProducts.map((product) => (
+                <Link key={product.id} to={`/productdetails/${product.id}`}>
+                  <ItemCard
+                    key={product.id}
+                    id={product.id}
+                    name={product.name}
+                    unitPrice={product.unitPrice}
+                    initialRating={product.initialRating}
+                    reviews={product.reviews}
+                    discount={product.discount}
+                    image={product.image}
+                    skuCode={product.skuCode}
+                  />
+                </Link>
+              ))
+            ) : (
+              <div className="col-span-full text-center text-lg text-gray-600">
+                No products available.
+              </div>
+            )}
+          </div>
+        )}
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}

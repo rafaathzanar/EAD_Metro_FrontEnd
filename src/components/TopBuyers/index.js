@@ -1,4 +1,6 @@
 import React from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 
 function TopBuyers({TopBuyers}) {
@@ -13,10 +15,10 @@ function TopBuyers({TopBuyers}) {
       <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
       <thead>
             <tr>
-              <th className="py-2 px-4 text-left font-black text-gray-600">S/N</th>
+              <th className="py-2 px-4 text-left font-black text-gray-600">ID</th>
               <th className="py-2 px-4 text-left font-black text-gray-600">Users Name</th>
               <th className="py-2 px-4 text-left font-black text-gray-600">Total Product</th>
-              <th className="py-2 px-4 text-left font-extrabold text-gray-600">Offer</th>
+              <th className="py-2 px-4 text-left font-extrabold text-gray-600">phone Number</th>
             </tr>
           </thead>
           <tbody >
@@ -26,13 +28,15 @@ function TopBuyers({TopBuyers}) {
       <td className="py-3 px-4 text-gray-700">{String(product.id).padStart(2, '0')}</td>
       <td className="py-3 px-4 text-gray-700">{product.userName}</td>
       <td className="py-3 px-4 text-gray-700">{product.totalProduct}</td>
-      <td className="py-3 px-4 text-gray-700">{product.offer}</td>
+      <td className="py-3 px-4 text-gray-700">{product.phoneNumber}</td>
       
     </tr>
   ))
 ) : (
   <tr>
-    <td colSpan="5" className="py-3 px-4 text-gray-700 text-center">No products available</td>
+    <td colSpan="5" className="py-3 px-4 text-gray-700 text-center">
+    <CircularProgress sx={{ color: "#a85032" }} />
+    </td>
   </tr>
 )}
 

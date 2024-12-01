@@ -52,22 +52,22 @@ const Footer = () => {
           <h3 className="font-medium">Account</h3>
           <ul className="space-y-2 text-sm">
             <li>
-              <a href="#" className="hover:underline">
+              <a href="/myaccount" className="hover:underline">
                 My Account
               </a>
             </li>
             <li>
-              <a href="#" className="hover:underline">
+              <a href="/signin" className="hover:underline">
                 Login / Register
               </a>
             </li>
             <li>
-              <a href="#" className="hover:underline">
+              <a href="/cart" className="hover:underline">
                 Cart
               </a>
             </li>
             <li>
-              <a href="#" className="hover:underline">
+              <a href="/wishlist" className="hover:underline">
                 Wishlist
               </a>
             </li>

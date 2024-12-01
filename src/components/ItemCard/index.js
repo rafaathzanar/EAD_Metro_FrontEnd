@@ -1,40 +1,40 @@
-import React, { useState } from "react";
+import React from "react";
 import { Heart } from "lucide-react";
 
 const ItemCard = ({
-  title,
-  originalPrice,
-  initialRating = 0,
-  reviews,
-  discountPercentage,
-  imageUrl,
-  onRatingChange,
+  name,
+  image,
+  unitPrice,
+  discount,
+  // initialRating = 0,
+  // onRatingChange,
+  // ratingCount,
 }) => {
-  const [rating, setRating] = useState(initialRating);
-  const [hoverRating, setHoverRating] = useState(0);
+  // const [rating, setRating] = useState(initialRating);
+  // const [hoverRating, setHoverRating] = useState(0);
 
-  const handleRatingClick = (newRating) => {
-    setRating(newRating);
-    if (onRatingChange) {
-      onRatingChange(newRating);
-    }
-  };
+  // const handleRatingClick = (newRating) => {
+  //   setRating(newRating);
+  //   if (onRatingChange) {
+  //     onRatingChange(newRating);
+  //   }
+  // };
 
-  const calculatedPrice = discountPercentage
-    ? Math.round(originalPrice - originalPrice * (discountPercentage / 100))
-    : originalPrice;
+  const calculatedPrice = discount
+    ? Math.round(unitPrice - unitPrice * (discount / 100))
+    : unitPrice;
 
-  const discount = discountPercentage ? `-${discountPercentage}%` : null;
+  const discountRate = discount ? `-${discount}%` : null;
 
   return (
     <div className="w-[250px]  bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
       {" "}
       <div className="relative border-b-2 border-gray-200">
-        <img src={imageUrl} alt={title} className="w-full h-40 object-cover" />
+        <img src={image} alt={name} className="w-full h-40 object-cover" />
 
-        {discount && (
+        {discountRate && (
           <span className="absolute top-2 left-2 bg-gradient-to-b from-black to-[#F37123] text-white px-2 py-1 rounded text-sm">
-            {discount}
+            {discountRate}
           </span>
         )}
 
@@ -43,21 +43,21 @@ const ItemCard = ({
         </button>
       </div>
       <div className="p-4 pt-2 pb-2 ">
-        <h3 className="text-lg font-serif text-gray-800">{title}</h3>
+        <h3 className="text-lg font-serif text-gray-800">{name}</h3>
 
         <div className="mt-1 flex items-center gap-2">
           <span className="text-base font-black text-gray-900">
             Rs.{calculatedPrice}.00
           </span>
-          {discountPercentage && (
+          {discount && (
             <span className="text-sm text-gray-500 line-through">
-              Rs.{originalPrice}.00
+              Rs.{unitPrice}.00
             </span>
           )}
         </div>
 
         {/* Interactive Rating */}
-        <div className="mt-1">
+        {/* <div className="mt-1">
           <div className="flex items-center gap-1">
             {[1, 2, 3, 4, 5].map((star) => (
               <button
@@ -80,9 +80,9 @@ const ItemCard = ({
                 </svg>
               </button>
             ))}
-            <span className="text-sm text-gray-500 ml-2">({reviews})</span>
+            <span className="text-sm text-gray-500 ml-2">({ratingCount})</span>
           </div>
-        </div>
+        </div> */}
       </div>
       <button className="mt-1 w-full bg-black text-white py-2 text-sm font-bold rounded-b-md hover:bg-gradient-to-b from-black to-[#F37123] transition-colors">
         Add To Cart

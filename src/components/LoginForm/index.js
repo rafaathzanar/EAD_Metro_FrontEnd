@@ -1,17 +1,38 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import UserService from "../../services/UserService";
 
 export default function LogInForm() {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [errorModalVisible, setErrorModalVisible] = useState(false);
+  const navigate = useNavigate();
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await UserService.signInUser(formData);
+    if (response.success) {
+      // Redirect to the home page on successful login
+      navigate("/homepage");
+    } else {
+      // Show error modal on failure
+      setErrorModalVisible(true);
+    }
+  };
+
+  const closeModal = () => {
+    setErrorModalVisible(false);
+  };
+
   return (
     <>
-      {/*
-          This example requires updating your template:
-  
-          ```
-          <html class="h-full bg-white">
-          <body class="h-full">
-          ```
-        */}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
@@ -20,7 +41,12 @@ export default function LogInForm() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="#" method="POST" className="space-y-6">
+          <form
+            action="#"
+            onSubmit={handleSubmit}
+            method="POST"
+            className="space-y-6"
+          >
             <div>
               <label
                 htmlFor="email"
@@ -35,7 +61,9 @@ export default function LogInForm() {
                   type="email"
                   required
                   autoComplete="email"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#F37123] sm:text-sm/6"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#F37123] sm:text-sm/6"
                 />
               </div>
             </div>
@@ -64,7 +92,9 @@ export default function LogInForm() {
                   type="password"
                   required
                   autoComplete="current-password"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#F37123] sm:text-sm/6"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#F37123] sm:text-sm/6"
                 />
               </div>
             </div>
@@ -90,6 +120,25 @@ export default function LogInForm() {
           </p>
         </div>
       </div>
+
+      {errorModalVisible && (
+        <div className="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h3 className="text-lg font-semibold text-red-600">Login Failed</h3>
+            <p className="mt-2 text-sm text-gray-600">
+              Username or password is incorrect. Please try again.
+            </p>
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={closeModal}
+                className="px-4 py-2 bg-[#FFAD33] text-white rounded-md hover:bg-[#F37123]"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

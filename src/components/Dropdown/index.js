@@ -2,7 +2,7 @@
 import React, { useState, useRef } from 'react';
 import { ChevronDownIcon, XMarkIcon } from '@heroicons/react/24/solid';
 
-const Dropdown = ({ head, selections, onSelect }) => {
+const Dropdown = ({ head, selections, onSelect , onclosehappen }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTitle, setSelectedTitle] = useState(head); // Manage selected title
   const [isSelected, setIsSelected] = useState(false); // Track if an item is selected
@@ -19,7 +19,7 @@ const Dropdown = ({ head, selections, onSelect }) => {
   };
 
   const handleSelection = (item) => {
-    setSelectedTitle(item.label); // Update the title to the selected option
+    setSelectedTitle(item.name); // Update the title to the selected option
     setIsSelected(true); // Mark item as selected
     setIsOpen(false); // Close the dropdown
     onSelect(item); // Notify the parent component of the selected option
@@ -53,6 +53,7 @@ const Dropdown = ({ head, selections, onSelect }) => {
             onClick={(e) => {
               e.stopPropagation(); // Prevent dropdown from toggling
               clearSelection();
+              onclosehappen();
             }}
           />
         ) : (
@@ -75,7 +76,7 @@ const Dropdown = ({ head, selections, onSelect }) => {
                 onClick={() => handleSelection(item)} // Handle selection
                 className="block w-full text-left px-4 py-2 hover:bg-orange-200 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white"
               >
-                {item.label}
+                {item.name}
               </button>
             </li>
           ))}

@@ -20,17 +20,13 @@ import SignUp from "./pages/SignUp";
 import StockAndInventory from "./pages/StockAndInventory";
 import Vouchers from "./pages/Vouchers";
 import WishList from "./pages/WishList";
+import Checkout from "./pages/Checkout";
+import FlashSalesPage from "./pages/FlashSalesPage";
+import BestSelling from "./pages/BestSelling";
+import ManageMyAccount from "./pages/ManageMyAccount";
 
 function App() {
   const isLoggedIn = true;
-
-  // Sample product data for testing
-  const sampleProduct = {
-    imageUrl: "https://example.com/product-image.jpg",
-    name: "Sample Product",
-    price: "25000",
-    description: "This is a sample product description.",
-  };
 
   return (
     <PromotionalProvider>
@@ -48,11 +44,9 @@ function App() {
           <Route path="/flashsales" element={<FlashSalesPage />} />
           <Route path="/bestselling" element={<BestSelling />} />
 
-          <Route
-            path="/productdetails"
-            element={<ProductDetails product={sampleProduct} />}
-          />
+          <Route path="/productdetails/:id" element={<ProductDetails />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/myaccount" element={<ManageMyAccount />} />
 
           {/* <Route
             path="admin/vouchers"

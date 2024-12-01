@@ -32,7 +32,7 @@ import { motion } from 'framer-motion';
         <div className="text-xl md:text-2xl font-semibold text-black oldstyle-nums">
           {displayTotalSuppliers ?? 0}
         </div>
-        <div className="text-gray-600 mt-2">Total Items Cost</div>
+        <div className="text-gray-600 mt-2">Total Suppliers</div>
         <div className="flex items-center text-gray-600 text-xs mt-2 pt-3">
           <motion.div
             initial={{ y: arrowdir === "up" ? 10 : arrowdir === "down" ? -10 : 0 }}

@@ -4,8 +4,8 @@ import {
   Package,
   Tag,
   ShoppingCart,
-  Truck,
-  Receipt,
+  // Truck,
+  // Receipt,
 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -74,7 +74,7 @@ export default function Sidebar() {
           label="Sells"
           link="/admin/sells"
         />
-        <NavItem
+        {/* <NavItem
           isSidebarOpen={isSidebarOpen}
           Icon={Truck}
           label="Delivery"
@@ -85,7 +85,7 @@ export default function Sidebar() {
           Icon={Receipt}
           label="Orders"
           link="/admin/orders"
-        />
+        /> */}
       </div>
     </motion.div>
   );

@@ -1,27 +1,16 @@
-"use client";
-
-import React from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
-import { Calendar as CalendarIcon, Search } from "lucide-react";
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
-
-import { Button } from "../components/ui/button";
+// import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+// import { Button } from "../components/ui/button";
+import { HashLoader } from "react-spinners";
 import {
   Card,
   CardContent,
-  CardDescription,
+  // CardDescription,
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
 import { Input } from "../components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../components/ui/select";
 import {
   Table,
   TableBody,
@@ -30,88 +19,191 @@ import {
   TableHeader,
   TableRow,
 } from "../components/ui/table";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../components/ui/popover";
-import { Calendar } from "../components/ui/calendar";
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "../components/ui/chart";
 
-// Sample data for the sales table
-const salesData = [
-  {
-    id: 1,
-    date: "2023-11-01",
-    product: "iPhone 13",
-    customer: "John Doe",
-    amount: 999,
-    status: "Completed",
-  },
-  {
-    id: 2,
-    date: "2023-11-02",
-    product: "Samsung Galaxy S21",
-    customer: "Jane Smith",
-    amount: 799,
-    status: "Pending",
-  },
-  {
-    id: 3,
-    date: "2023-11-03",
-    product: "MacBook Pro",
-    customer: "Alice Johnson",
-    amount: 1999,
-    status: "Completed",
-  },
-  {
-    id: 4,
-    date: "2023-11-04",
-    product: "AirPods Pro",
-    customer: "Bob Brown",
-    amount: 249,
-    status: "Shipped",
-  },
-  {
-    id: 5,
-    date: "2023-11-05",
-    product: "iPad Air",
-    customer: "Charlie Davis",
-    amount: 599,
-    status: "Completed",
-  },
-];
-
-// Sample data for the chart
-const chartData = [
-  { name: "Jan", total: 1200 },
-  { name: "Feb", total: 1800 },
-  { name: "Mar", total: 2200 },
-  { name: "Apr", total: 2600 },
-  { name: "May", total: 3200 },
-  { name: "Jun", total: 3800 },
-];
+// import {
+//   Popover,
+//   PopoverContent,
+//   PopoverTrigger,
+// } from "../components/ui/popover";
+// import { Calendar } from "../components/ui/calendar";
+import OrderService from "../services/OrderService";
 
 export default function Sells() {
-  const [date, setDate] = useState(undefined); // Correct initialization
+  // const [date, setDate] = useState(undefined);
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [summary, setSummary] = useState({
+    totalRevenue: 0,
+    totalOrders: 0,
+    totalQuantity: 0,
+  });
 
-  const filteredSales = salesData.filter((sale) => {
+  useEffect(() => {
+    const fetchOrdersWithUsers = async () => {
+      try {
+        setLoading(true);
+
+        // Fetch orders
+        const ordersResponse = await OrderService.getAllOrders();
+
+        const ordersData = ordersResponse.data.body || [];
+
+        // Fetch all products
+        const productsResponse = await OrderService.getAllProducts();
+
+        const productsData = Array.isArray(productsResponse)
+          ? productsResponse
+          : [];
+        if (productsData.length === 0) {
+          console.warn("No products found");
+        }
+
+        const enhancedOrders = await Promise.all(
+          ordersData.map(async (order) => {
+            try {
+              // Fetch user data
+              const userResponse = await OrderService.getUserById(order.userId);
+              const userName = userResponse?.user?.name || "Unknown";
+
+              // // Find product by SKU code (trim spaces for accurate matching)
+              // const product = productsData.find(
+              //   (prod) => prod.skuCode.trim() === order.skuCode.trim()
+              // );
+
+              // console.log("🚀 ~ ordersData.map ~ productsData:", productsData);
+              // console.log("🚀 ~ ordersData.map ~ product:", product);
+
+              // const productName = product ? product.name : "Unknown Product";
+
+              // Find product by SKU code (normalize for matching)
+              const product = productsData.find((prod) => {
+                const normalizedProdSku = prod.skuCode.trim().toLowerCase();
+                const normalizedOrderSku = order.skuCode.trim().toLowerCase();
+
+                // Debugging logs
+                console.log("Matching SKU:", {
+                  normalizedProdSku,
+                  normalizedOrderSku,
+                });
+
+                return normalizedProdSku === normalizedOrderSku;
+              });
+
+              console.log("🚀 ~ ordersData.map ~ product:", product);
+
+              const productName = product ? product.name : "Unknown Product";
+
+              // Format the date safely
+              const createdAtFormatted = order.createdAt
+                ? format(new Date(order.createdAt), "PPP") // e.g., Jan 1, 2024
+                : "Unknown Date";
+
+              // Return the enhanced order object
+              return {
+                ...order,
+                userName,
+                productName,
+                createdAtFormatted,
+              };
+            } catch (error) {
+              console.error("Error enhancing order:", error);
+
+              // Handle errors gracefully by returning an order with fallback data
+              return {
+                ...order,
+                userName: "Unknown",
+                productName: "Unknown Product",
+                createdAtFormatted: "Unknown Date",
+              };
+            }
+          })
+        );
+
+        // Fetch user data and match product SKU codes
+        // const enhancedOrders = await Promise.all(
+        //   ordersData.map(async (order) => {
+        //     try {
+        //       // Fetch user data
+        //       const userResponse = await OrderService.getUserById(order.userId);
+        //       const userName = userResponse?.user?.name || "Unknown";
+
+        //       // Find product by SKU code
+        //       const product = productsData.find(
+        //         (prod) => prod.skuCode === order.skuCode
+        //       );
+        //       console.log("🚀 ~ ordersData.map ~ productsData:", productsData);
+        //       console.log("🚀 ~ ordersData.map ~ product:", product);
+
+        //       const productName = product ? product.name : "Unknown Product";
+
+        //       // Format date safely
+        //       const createdAtFormatted = order.createdAt
+        //         ? format(new Date(order.createdAt), "PPP")
+        //         : "Unknown Date";
+
+        //       // Return the enhanced order object
+        //       return {
+        //         ...order,
+        //         userName,
+        //         productName,
+        //         createdAtFormatted,
+        //       };
+        //     } catch (error) {
+        //       console.error("Error enhancing order:", error);
+        //       return {
+        //         ...order,
+        //         userName: "Unknown",
+        //         productName: "Unknown Product",
+        //         createdAtFormatted: "Unknown Date",
+        //       };
+        //     }
+        //   })
+        // );
+
+        setOrders(enhancedOrders);
+
+        // Calculate summary
+        const totalRevenue = enhancedOrders.reduce(
+          (sum, order) => sum + order.price * order.quantity,
+          0
+        );
+        const totalQuantity = enhancedOrders.reduce(
+          (sum, order) => sum + order.quantity,
+          0
+        );
+        const totalOrders = enhancedOrders.length;
+
+        setSummary({ totalRevenue, totalOrders, totalQuantity });
+      } catch (err) {
+        console.error("Error fetching orders:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrdersWithUsers();
+  }, []);
+
+  if (loading) {
     return (
-      (searchTerm === "" ||
-        sale.product.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        sale.customer.toLowerCase().includes(searchTerm.toLowerCase())) &&
-      (statusFilter === "all" || sale.status === statusFilter)
+      <div className="flex justify-center items-center h-screen">
+        <HashLoader color="#a78b47" loading size={50} speedMultiplier={2.5} />
+      </div>
+    );
+  }
+
+  const filteredOrders = orders.filter((order) => {
+    return (
+      searchTerm === "" ||
+      order.skuCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.userName.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
 
   return (
     <div className="container mx-auto pl-16 space-y-8">
+      {/* Header Section */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Sales Record</h1>
@@ -119,17 +211,14 @@ export default function Sells() {
             Manage your store sales and transactions
           </p>
         </div>
-        <div className="flex items-center space-x-2">
+        {/* <div className="flex items-center space-x-2">
           <Popover>
             <PopoverTrigger asChild>
               <Button
-                variant={"outline"}
-                className={`w-[240px] justify-start text-left font-normal ${
-                  !date && "text-muted-foreground"
-                }`}
+                variant="outline"
+                className="w-[240px] justify-start text-left font-normal"
               >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {date ? format(date, "PPP") : <span>Pick a date</span>}
+                <span>{date ? format(date, "PPP") : "Pick a date"}</span>
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
@@ -142,136 +231,74 @@ export default function Sells() {
             </PopoverContent>
           </Popover>
           <Button>Generate Report</Button>
-        </div>
+        </div> */}
       </div>
 
+      {/* Summary Section */}
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+          <CardHeader>
+            <CardTitle>Total Revenue</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$45,231.89</div>
-            <p className="text-xs text-muted-foreground">
-              +20.1% from last month
-            </p>
+            <div className="text-2xl font-bold">
+              Rs.{summary.totalRevenue.toFixed(2)}
+            </div>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Sales</CardTitle>
+          <CardHeader>
+            <CardTitle>Total Orders</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+2350</div>
-            <p className="text-xs text-muted-foreground">
-              +180.1% from last month
-            </p>
+            <div className="text-2xl font-bold">{summary.totalOrders}</div>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Active Customers
-            </CardTitle>
+          <CardHeader>
+            <CardTitle>Total Quantity Sold</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+12,234</div>
-            <p className="text-xs text-muted-foreground">
-              +19% from last month
-            </p>
+            <div className="text-2xl font-bold">{summary.totalQuantity}</div>
           </CardContent>
         </Card>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Sales Overview</CardTitle>
-        </CardHeader>
-        <CardContent className="pl-2">
-          <ChartContainer
-            config={{
-              total: {
-                label: "Total Sales",
-                color: "hsl(var(--chart-1))",
-              },
-            }}
-            className="h-[300px]"
-          >
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData}>
-                <XAxis
-                  dataKey="name"
-                  stroke="#888888"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <YAxis
-                  stroke="#888888"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                  tickFormatter={(value) => `${value}`}
-                />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Bar
-                  dataKey="total"
-                  fill="var(--color-total)"
-                  radius={[4, 4, 0, 0]}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </ChartContainer>
-        </CardContent>
-      </Card>
-
+      {/* Orders Table */}
       <Card>
         <CardHeader>
           <CardTitle>Recent Sales</CardTitle>
-          <CardDescription>You made 265 sales this month.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col md:flex-row justify-between items-center mb-4 space-y-2 md:space-y-0">
-            <div className="flex items-center space-x-2">
-              <Input
-                placeholder="Search products or customers..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-[300px]"
-              />
-              <Search className="w-4 h-4 text-gray-500" />
-            </div>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Filter by status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="Completed">Completed</SelectItem>
-                <SelectItem value="Pending">Pending</SelectItem>
-                <SelectItem value="Shipped">Shipped</SelectItem>
-              </SelectContent>
-            </Select>
+            <Input
+              placeholder="Search by SKU or Customer..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-[300px]"
+            />
           </div>
           <div className="rounded-md border">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Product</TableHead>
+                  <TableHead>ID</TableHead>
+                  <TableHead>SKU</TableHead>
                   <TableHead>Customer</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>Price</TableHead>
+                  <TableHead>Quantity</TableHead>
+                  <TableHead>Date</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredSales.map((sale) => (
-                  <TableRow key={sale.id}>
-                    <TableCell>{sale.date}</TableCell>
-                    <TableCell>{sale.product}</TableCell>
-                    <TableCell>{sale.customer}</TableCell>
-                    <TableCell>${sale.amount.toFixed(2)}</TableCell>
-                    <TableCell>{sale.status}</TableCell>
+                {filteredOrders.map((order) => (
+                  <TableRow key={order.id}>
+                    <TableCell>{order.id}</TableCell>
+                    <TableCell>{order.skuCode}</TableCell>
+                    <TableCell>{order.userName}</TableCell>
+                    <TableCell>${order.price.toFixed(2)}</TableCell>
+                    <TableCell>{order.quantity}</TableCell>
+                    <TableCell>{order.createdAtFormatted}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

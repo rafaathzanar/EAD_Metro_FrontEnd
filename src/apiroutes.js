@@ -10,10 +10,10 @@ export const GET_SINGLE_USER = USER_ENDPOINT + "auth/retriveByUserId";
 export const GET_All_USERS = USER_ENDPOINT + "users/all";
 export const GET_SINGLE_USER2 = USER_ENDPOINT + "users/get-by-id";
 
-
 export const GET_LOGGED_IN_INFO =
   USER_ENDPOINT + "users/get-logged-in-profile-info";
-export const GET_SINGLE_USER_BY_ID = USER_ENDPOINT + "users/get-by-id/:id";
+export const GET_SINGLE_USER_BY_ID = (id) =>
+  `${USER_ENDPOINT}users/get-by-id/${id}`;
 export const GET_ALL_USERS = USER_ENDPOINT + "users/all";
 export const DELETE_SINGLE_USER = USER_ENDPOINT + "users/delete/:id";
 
@@ -26,3 +26,10 @@ export const DELETE_PRODUCT = PRODUCT_ENDPOINT + "api/product/deleteProduct";
 
 //order endpoints
 export const GET_ALL_ORDERS = ORDER_ENDPOINT + "api/order/getOrders";
+export const GET_ORDERS_BY_USER = ORDER_ENDPOINT + "api/order/getOrderByUser";
+export const DELETE_ORDER = ORDER_ENDPOINT + "api/order/deleteOrder";
+export const GET_ORDER_BY_SKU_ID =
+  ORDER_ENDPOINT + "api/order/getOrderBySkuCode";
+export const ADD_NEW_ORDER = ORDER_ENDPOINT + "api/order/placeOrder";
+export const UPDATE_ORDER = ORDER_ENDPOINT + "api/order/updateOrder";
+// export const GET_SINGLE_ORDER = ORDER_ENDPOINT + "api/order/getOrder/";

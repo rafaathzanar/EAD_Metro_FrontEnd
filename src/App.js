@@ -20,9 +20,6 @@ import SignUp from "./pages/SignUp";
 import StockAndInventory from "./pages/StockAndInventory";
 import Vouchers from "./pages/Vouchers";
 import WishList from "./pages/WishList";
-import Checkout from "./pages/Checkout";
-import FlashSalesPage from "./pages/FlashSalesPage";
-import BestSelling from "./pages/BestSelling";
 import ManageMyAccount from "./pages/ManageMyAccount";
 
 function App() {

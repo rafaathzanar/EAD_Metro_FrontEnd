@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Heart } from "lucide-react";
 
 const ItemCard = ({
@@ -6,19 +6,19 @@ const ItemCard = ({
   image,
   unitPrice,
   discount,
-  initialRating = 0,
-  onRatingChange,
-  ratingCount,
+  // initialRating = 0,
+  // onRatingChange,
+  // ratingCount,
 }) => {
-  const [rating, setRating] = useState(initialRating);
-  const [hoverRating, setHoverRating] = useState(0);
+  // const [rating, setRating] = useState(initialRating);
+  // const [hoverRating, setHoverRating] = useState(0);
 
-  const handleRatingClick = (newRating) => {
-    setRating(newRating);
-    if (onRatingChange) {
-      onRatingChange(newRating);
-    }
-  };
+  // const handleRatingClick = (newRating) => {
+  //   setRating(newRating);
+  //   if (onRatingChange) {
+  //     onRatingChange(newRating);
+  //   }
+  // };
 
   const calculatedPrice = discount
     ? Math.round(unitPrice - unitPrice * (discount / 100))
@@ -57,7 +57,7 @@ const ItemCard = ({
         </div>
 
         {/* Interactive Rating */}
-        <div className="mt-1">
+        {/* <div className="mt-1">
           <div className="flex items-center gap-1">
             {[1, 2, 3, 4, 5].map((star) => (
               <button
@@ -82,7 +82,7 @@ const ItemCard = ({
             ))}
             <span className="text-sm text-gray-500 ml-2">({ratingCount})</span>
           </div>
-        </div>
+        </div> */}
       </div>
       <button className="mt-1 w-full bg-black text-white py-2 text-sm font-bold rounded-b-md hover:bg-gradient-to-b from-black to-[#F37123] transition-colors">
         Add To Cart

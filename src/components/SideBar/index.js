@@ -77,7 +77,7 @@ const UserSidebar = () => {
       {/* Mobile Header */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center w-full p-4 bg-gray-800 text-white rounded-md md:hidden"
+        className="flex items-center w-full p-4 bg-gray-800 text-white rounded-md lg:hidden"
       >
         <Menu className="w-6 h-6 mr-2" />
         <span>All Categories</span>
@@ -90,18 +90,18 @@ const UserSidebar = () => {
 
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       <div
-        className={`fixed md:relative top-0 left-0 w-64 h-full bg-white transform transition-transform duration-200 ease-in-out z-50 
+        className={`fixed lg:relative top-0 left-0 w-64 h-full bg-white transform transition-transform duration-200 ease-in-out z-50 
           ${isOpen ? "translate-x-0" : "-translate-x-full"} 
-          md:transform-none md:translate-x-0 md:block md:h-auto md:shadow-lg md:rounded-lg`}
+          lg:transform-none lg:translate-x-0 lg:block lg:h-auto lg:shadow-lg lg:rounded-lg`}
       >
         {/* Mobile Close Button */}
-        <div className="p-4 bg-gray-600 text-white flex items-center justify-between md:hidden">
+        <div className="p-4 bg-gray-600 text-white flex items-center justify-between lg:hidden">
           <span>All Categories</span>
           <button onClick={() => setIsOpen(false)} className="p-1">
             ✕
@@ -128,7 +128,7 @@ const UserSidebar = () => {
 
               {activeCategory === index && (
                 <div
-                  className="hidden md:block absolute left-full top-0 w-64 bg-white shadow-lg rounded-r-lg border border-gray-200 z-50"
+                  className="hidden lg:block absolute left-full top-0 w-64 bg-white shadow-lg rounded-r-lg border border-gray-200 z-50"
                   style={{ marginLeft: "1px" }}
                   onMouseLeave={() =>
                     window.innerWidth >= 768 && setActiveCategory(null)
@@ -153,7 +153,7 @@ const UserSidebar = () => {
               )}
 
               {activeCategory === index && (
-                <div className="md:hidden bg-gray-50">
+                <div className="lg:hidden bg-gray-50">
                   {category.subcategories.map((sub, subIndex) => (
                     <a
                       key={subIndex}

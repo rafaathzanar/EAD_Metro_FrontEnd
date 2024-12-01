@@ -1,112 +1,116 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ItemCard from "../components/ItemCard/index";
-import photo from "../images/Product4.jpg";
 import Appbar from "../components/Appbar/index";
 import Footer from "../components/Footer";
+import UserService from "../services/UserService";
+import { Link } from "react-router-dom";
+import Spinner from "../components/Spinner";
 
 const BestSellingPage = () => {
-  const products = [
-    {
-      id: 1,
-      title: "HAVIT HV-G92 Gamepad",
-      originalPrice: 20000,
-      initialRating: 5,
-      reviews: 88,
-      discountPercentage: 40,
-    },
-    {
-      id: 2,
-      title: "JBL AA Speakers",
-      originalPrice: 3000,
-      initialRating: 4,
-      reviews: 75,
-      discountPercentage: 35,
-    },
-    {
-      id: 3,
-      title: "Samsung Gear S3",
-      originalPrice: 16000,
-      initialRating: 5,
-      reviews: 99,
-      discountPercentage: 30,
-    },
-    {
-      id: 4,
-      title: "JBL T450 AA",
-      originalPrice: 1600,
-      initialRating: 5,
-      reviews: 99,
-      discountPercentage: 25,
-    },
-    {
-      id: 5,
-      title: "Sony PS5 Controller",
-      originalPrice: 8000,
-      initialRating: 5,
-      reviews: 120,
-      discountPercentage: 20,
-    },
-    {
-      id: 6,
-      title: "Apple Watch Series 6",
-      originalPrice: 50000,
-      initialRating: 5,
-      reviews: 200,
-      discountPercentage: 15,
-    },
-    {
-      id: 7,
-      title: "Razer Mouse",
-      originalPrice: 8000,
-      initialRating: 5,
-      reviews: 50,
-      discountPercentage: 20,
-    },
-    {
-      id: 8,
-      title: "Dell Monitor",
-      originalPrice: 25000,
-      initialRating: 4,
-      reviews: 140,
-      discountPercentage: 18,
-    },
-    {
-      id: 9,
-      title: "Logitech Keyboard",
-      originalPrice: 5000,
-      initialRating: 4,
-      reviews: 70,
-      discountPercentage: 10,
-    },
-    {
-      id: 10,
-      title: "Anker Charger",
-      originalPrice: 1500,
-      initialRating: 5,
-      reviews: 200,
-      discountPercentage: 12,
-    },
-    {
-      id: 11,
-      title: "Beats Headphones",
-      originalPrice: 12000,
-      initialRating: 5,
-      reviews: 99,
-      discountPercentage: 25,
-    },
-    {
-      id: 12,
-      title: "Xiaomi Smart Band",
-      originalPrice: 3000,
-      initialRating: 4,
-      reviews: 150,
-      discountPercentage: 30,
-    },
-  ];
+  // const products = [
+  //   {
+  //     id: 1,
+  //     name: "HAVIT HV-G92 Gamepad",
+  //     unitPrice: 20000,
+  //     initialRating: 5,
+  //     reviews: 88,
+  //     discount: 40,
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "JBL AA Speakers",
+  //     unitPrice: 3000,
+  //     initialRating: 4,
+  //     reviews: 75,
+  //     discount: 35,
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Samsung Gear S3",
+  //     unitPrice: 16000,
+  //     initialRating: 5,
+  //     reviews: 99,
+  //     discount: 30,
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "JBL T450 AA",
+  //     unitPrice: 1600,
+  //     initialRating: 5,
+  //     reviews: 99,
+  //     discount: 25,
+  //   },
+  //   {
+  //     id: 5,
+  //     name: "Sony PS5 Controller",
+  //     unitPrice: 8000,
+  //     initialRating: 5,
+  //     reviews: 120,
+  //     discount: 20,
+  //   },
+  //   {
+  //     id: 6,
+  //     name: "Apple Watch Series 6",
+  //     unitPrice: 50000,
+  //     initialRating: 5,
+  //     reviews: 200,
+  //     discount: 15,
+  //   },
+  //   {
+  //     id: 7,
+  //     name: "Razer Mouse",
+  //     unitPrice: 8000,
+  //     initialRating: 5,
+  //     reviews: 50,
+  //     discount: 20,
+  //   },
+  //   {
+  //     id: 8,
+  //     name: "Dell Monitor",
+  //     unitPrice: 25000,
+  //     initialRating: 4,
+  //     reviews: 140,
+  //     discount: 18,
+  //   },
+  //   {
+  //     id: 9,
+  //     name: "Logitech Keyboard",
+  //     unitPrice: 5000,
+  //     initialRating: 4,
+  //     reviews: 70,
+  //     discount: 10,
+  //   },
+  //   {
+  //     id: 10,
+  //     name: "Anker Charger",
+  //     unitPrice: 1500,
+  //     initialRating: 5,
+  //     reviews: 200,
+  //     discount: 12,
+  //   },
+  //   {
+  //     id: 11,
+  //     name: "Beats Headphones",
+  //     unitPrice: 12000,
+  //     initialRating: 5,
+  //     reviews: 99,
+  //     discount: 25,
+  //   },
+  //   {
+  //     id: 12,
+  //     name: "Xiaomi Smart Band",
+  //     unitPrice: 3000,
+  //     initialRating: 4,
+  //     reviews: 150,
+  //     discount: 30,
+  //   },
+  // ];
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(12);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -137,6 +141,26 @@ const BestSellingPage = () => {
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
   };
 
+  const getAllProduct = async () => {
+    setLoading(true); // Set loading to true before fetching
+    try {
+      const response = await UserService.getAllProduct();
+      if (response.success) {
+        setProducts(response.data);
+      } else {
+        console.error("Failed to fetch products:", response.error);
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getAllProduct();
+  }, []);
+
   return (
     <div>
       <Appbar />
@@ -147,19 +171,35 @@ const BestSellingPage = () => {
             Best Selling products
           </h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mx-auto px-4 max-w-screen-xl place-items-center">
-          {currentProducts.map((product) => (
-            <ItemCard
-              key={product.id}
-              title={product.title}
-              originalPrice={product.originalPrice}
-              initialRating={product.initialRating}
-              reviews={product.reviews}
-              discountPercentage={product.discountPercentage}
-              imageUrl={photo}
-            />
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex justify-center items-center h-screen">
+            <Spinner />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mx-auto px-4 max-w-screen-xl place-items-center">
+            {currentProducts.length > 0 ? (
+              currentProducts.map((product) => (
+                <Link key={product.id} to={`/productdetails/${product.id}`}>
+                  <ItemCard
+                    key={product.id}
+                    id={product.id}
+                    name={product.name}
+                    unitPrice={product.unitPrice}
+                    initialRating={product.initialRating}
+                    reviews={product.reviews}
+                    discount={product.discount}
+                    image={product.image}
+                    skuCode={product.skuCode}
+                  />
+                </Link>
+              ))
+            ) : (
+              <div className="col-span-full text-center text-lg text-gray-600">
+                No products available.
+              </div>
+            )}
+          </div>
+        )}
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}

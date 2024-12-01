@@ -14,14 +14,14 @@ export default function Home() {
     <div>
       <Appbar />
       <div>
-        <div className="flex flex-col lg:flex-row px-5 lg:pl-24 py-5">
+        <div className="flex flex-col lg:flex-row px-5 lg:gap-28  lg:pl-24 py-5">
           {/* Sidebar */}
           <div className="w-full lg:w-1/6 mb-5 lg:mb-0">
             <UserSidebar />
           </div>
 
           {/* Main Content */}
-          <div className="w-full lg:w-5/6 mx-0 lg:mx-6 mt-8">
+          <div className="w-full lg:w-4/6  mx-0 lg:mx-6 mt-8">
             <HomeTop />
           </div>
         </div>

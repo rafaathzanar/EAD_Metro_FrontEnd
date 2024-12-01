@@ -6,10 +6,13 @@ import AdminLayout from "./pages/AdminLayout";
 import Cart from "./pages/Cart";
 import ContactPage from "./pages/ContactPage";
 import DashboardLayout from "./pages/DashboardLayout";
-import Delivery from "./pages/Delivery";
+// import Delivery from "./pages/Delivery";
 import ForgotPw from "./pages/ForgorPw";
 import HomePage from "./pages/Home";
-import Orders from "./pages/Orders";
+// import Orders from "./pages/Orders";
+import BestSelling from "./pages/BestSelling";
+import Checkout from "./pages/Checkout";
+import FlashSalesPage from "./pages/FlashSalesPage";
 import ProductDetails from "./pages/ProductDetails";
 import Sells from "./pages/Sells";
 import SignIn from "./pages/SignIn";
@@ -17,9 +20,6 @@ import SignUp from "./pages/SignUp";
 import StockAndInventory from "./pages/StockAndInventory";
 import Vouchers from "./pages/Vouchers";
 import WishList from "./pages/WishList";
-import Checkout from "./pages/Checkout";
-import FlashSalesPage from "./pages/FlashSalesPage";
-import BestSelling from "./pages/BestSelling";
 
 function App() {
   const isLoggedIn = true;
@@ -73,8 +73,8 @@ function App() {
                 element={<StockAndInventory />}
               />
               <Route path="sells" element={<Sells />} />
-              <Route path="delivery" element={<Delivery />} />
-              <Route path="orders" element={<Orders />} />
+              {/* <Route path="delivery" element={<Delivery />} />
+              <Route path="orders" element={<Orders />} /> */}
               <Route path="vouchers" element={<Vouchers />} />
             </Route>
           )}

@@ -1,17 +1,85 @@
 /* eslint-disable no-undef */
-import { Grid2, TextField, Typography, Button , MenuItem} from "@mui/material";
 import React, { useState } from "react";
+import {
+  TextField,
+  MenuItem,
+  Box,
+  Typography,
+  IconButton,
+  Avatar,
+  Grid2,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
 
-function EditModelContent({ onClose, onEditItem, dropdownSelections }) {
-  const [productName, setProductName] = useState("");
-  const [productID, setProductID] = useState("");
-  const [category, setCategory] = useState("");
-  const [qtyPurchased, setQtyPurchased] = useState("");
-  const [unitPrice, setUnitPrice] = useState("");
-  // const [totalAmount, setTotalAmount] = useState("");
-  const [supplier, setSupplier] = useState("");
-  const [available, setAvailable] = useState("");
-  const [stockReturn, setStockReturn] = useState("");
+const Input = styled("input")({
+  display: "none",
+});
+import * as ApiRoutes from "../../apiroutes.js";
+import axios from "axios";
+import CircularProgress from '@mui/material/CircularProgress';
+
+// onClose={closeEditModel}
+// onEditItem={handleEditItem}
+function EditModelContent({ product ,onclose  , dropdownSelections }) {
+  const [productName, setProductName] = useState(product?.name);
+  const [category, setCategory] = useState(product?.category);
+  const [qtyPurchased, setQtyPurchased] = useState(product?.quantity);
+  const [unitCost, setUnitCost] = useState(product?.unitCost);
+  const [unitPrice, setUnitPrice] = useState(product?.unitPrice);
+  const [supplier, setSupplier] = useState(product?.supplierName);
+  const [image, setImage] = useState(null);
+  const [description, setDescription] = useState(product?.description);
+  const [ratingCount, setRatingCount] = useState(product?.ratingCount);
+  const [rating, setRating] = useState(product?.rating);
+  const [discount, setDiscount] = useState(product?.discount);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file); 
+    } else {
+      console.error("Invalid file selected.");
+    }
+  };
+  
+
+  const calculateTotalAmount = () => {
+    return qtyPurchased && unitCost ? qtyPurchased * unitCost : 0;
+  };
+
+  const handleSubmit = async () => {
+    
+  
+    const formdata = new FormData();
+    formdata.append("id", product.id);
+    formdata.append("image", image);
+    formdata.append("name", productName);
+    formdata.append("unitPrice", unitPrice);
+    formdata.append("unitCost", unitCost);
+    formdata.append("discount", discount);
+    formdata.append("category", category);
+    formdata.append("supplierName", supplier);
+    formdata.append("quantity", qtyPurchased);
+    formdata.append("description", description);
+    formdata.append("ratingCount", ratingCount);
+    formdata.append("rating", rating);
+  
+    try {
+        setIsLoading(true);
+      const response = await axios.put(ApiRoutes.UPDATE_PRODUCT, formdata, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("Response:", response.data);
+      setIsLoading(false);
+      onclose();
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
+  
 
   const sxSetting = {
     "& .MuiOutlinedInput-root": {
@@ -33,158 +101,240 @@ function EditModelContent({ onClose, onEditItem, dropdownSelections }) {
     },
   };
 
-  const sxsettingButton = {
-    backgroundColor: "orange",
-    height: "53px",
-    color: "white",
-    padding: "10px 20px",
-    transition: "background-color 0.3s ease",
-    "&:hover": {
-      backgroundColor: "darkorange",
-      boxShadow: "0px 6px 8px rgba(0, 0, 0, 0.15)",
-    },
-    "&:focus": {
-      outline: "none",
-      boxShadow: "0px 0px 4px 2px rgba(255, 165, 0, 0.6)",
-    },
-    textAlign:"right"
-  };
-
-  const handleUpdateProduct = () => {
-    const updatedProduct = {
-      productName,
-      productID,
-      category,
-      qtyPurchased,
-      unitPrice,
-      supplier,
-      available,
-      stockReturn,
-    };
-    console.log("Updated Product:", updatedProduct);
-
-    onEditItem(updatedProduct);
-
-    onClose();
-  };
-
-  //total amount calculation
-  const calculateTotalAmount = () => {
-    return qtyPurchased && unitPrice ? qtyPurchased * unitPrice : 0;
-  };
-
   return (
-    <div className="m-6">
-      <Grid2 container spacing={2}>
-        <Grid2 size={{ xs: 12, md: 12, lg: 12 }}>
-          <Typography variant="h6" gutterBottom textAlign={"center"}>
-            Update Product
-          </Typography>
-        </Grid2>
-        <Grid2 size={{ xs: 12, md: 6, lg: 6 }}>
-          <TextField
-            fullWidth
-            label="Product Name"
-            variant="outlined"
-            value={productName}
-            sx={sxSetting}
-            onChange={(e) => setProductName(e.target.value)}
-          />
-        </Grid2>
-        <Grid2 size={{ xs: 12, md: 6, lg: 6 }}>
-          <TextField
-            fullWidth
-            label="Product ID"
-            variant="outlined"
-            value={productID}
-            sx={sxSetting}
-            onChange={(e) => setProductID(e.target.value)}
-          />
-        </Grid2>
-        <Grid2 size={{ xs: 12, md: 6, lg: 6 }}>
-          <TextField
-            select
-            fullWidth
-            label="Category"
-            variant="outlined"
-            value={category}
-            sx={sxSetting}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            {dropdownSelections.map((option, index) => (
-              <MenuItem key={index} value={option.label}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Grid2>
-        <Grid2 size={{ xs: 12, md: 6, lg: 6 }}>
-          <TextField
-            fullWidth
-            label="QTY Purchased"
-            variant="outlined"
-            value={qtyPurchased}
-            sx={sxSetting}
-            onChange={(e) => setQtyPurchased(Number(e.target.value))}
-          />
-        </Grid2>
-        <Grid2 size={{ xs: 12, md: 6, lg: 6 }}>
-          <TextField
-            fullWidth
-            label="Unit Price"
-            variant="outlined"
-            value={unitPrice}
-            sx={sxSetting}
-            onChange={(e) => setUnitPrice(Number(e.target.value))}
-          />
-        </Grid2>
-        <Grid2 size={{ xs: 12, md: 6, lg: 6 }}>
-          <TextField
-            fullWidth
-            label="Total Amount"
-            variant="outlined"
-            value={calculateTotalAmount()}
-            sx={sxSetting}
-          />
-        </Grid2>
-        <Grid2 size={{ xs: 12, md: 6, lg: 6 }}>
-          <TextField
-            fullWidth
-            label="Supplier"
-            variant="outlined"
-            value={supplier}
-            sx={sxSetting}
-            onChange={(e) => setSupplier(e.target.value)}
-          />
-        </Grid2>
-        <Grid2 size={{ xs: 12, md: 6, lg: 6 }}>
-          <TextField
-            fullWidth
-            label="Return"
-            variant="outlined"
-            value={stockReturn}
-            sx={sxSetting}
-            onChange={(e) => setStockReturn(Number(e.target.value))}
-          />
-        </Grid2>
-        <Grid2 size={{ xs: 12, md: 6, lg: 9 }}>
-          <TextField
-            fullWidth
-            label="Available"
-            variant="outlined"
-            value={available}
-            sx={sxSetting}
-            onChange={(e) => setAvailable(Number(e.target.value))}
-          />
-        </Grid2>
+    !isLoading ? (<div>
+      <div className="bg-white rounded-lg p-6 md-mt-10  w-full max-w-5xl mx-auto">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+          Update Item
+        </h2>
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6"> */}
+        <Grid2 container spacing={3} sx={{ gap: 3 }}>
+          {/* Upload Photos Section */}
+          <Grid2 size={{ xs: 12, md: 12, lg: 4 }}>
+            <Box
+              className="flex flex-col items-center"
+              sx={{
+                border: "1px solid #e0e0e0",
+                borderRadius: "8px",
+                padding: "24px",
+                backgroundColor: "#f5f5f5",
+                textAlign: "center",
+              }}
+            >
+              <label htmlFor="imageUpload">
+                <Input
+                  id="imageUpload"
+                  type="file"
+                  accept="image/jpeg, image/png"
+                  onChange={handleImageUpload}
+                />
+                <IconButton
+                  component="span"
+                  sx={{
+                    width: {
+                      xs: "70px", // 100% width on extra-small screens
+                      sm: "60px", // 80% width on small screens
+                      md: "100px", // 60% width on medium screens
+                      lg: "150px", // 40% width on large screens
+                    },
+                    height: {
+                      xs: "70px", // 100px height on extra-small screens
+                      sm: "60px", // 120px height on small screens
+                      md: "100px", // 140px height on medium screens
+                      lg: "150px", // 160px height on large screens
+                    },
+                    backgroundColor: "#e0e0e0",
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    "&:hover": {
+                      backgroundColor: "#d6d6d6",
+                    },
+                  }}
+                >
+                  {image ? (
+                    <Avatar
+                      src={URL.createObjectURL(image)}
+                      alt="Uploaded"
+                      sx={{
+                        width: "100%",
+                        height: "100%",
+                        borderRadius: "50%",
+                        objectFit: "cover",
+                      }}
+                    />
+                  ) : (
+                    <Typography variant="h3" color="text.secondary">
+                      +
+                    </Typography>
+                  )}
+                </IconButton>
+              </label>
+              <Typography
+                variant="body2"
+                sx={{ marginTop: 2, color: "text.secondary" }}
+              >
+                Allowed formats: JPG, JPEG, PNG
+              </Typography>
+            </Box>
+          </Grid2>
+          {/* Input Fields Section */}
+          {/* <div className="col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4"> */}
+          <Grid2 size={{ xs: 12, md: 12, lg: 8 }}>
+            <Grid2 container spacing={2} sx={{ width: "100%" }}>
+              <Grid2 size={{ xs: 12, md: 12, lg: 6 }}>
+                <TextField
+                  label="Enter Product Name"
+                  variant="outlined"
+                  fullWidth
+                  value={productName}
+                  onChange={(e) => setProductName(e.target.value)}
+                  sx={sxSetting}
+                />
+              </Grid2>
+              <Grid2 size={{ xs: 12, md: 12, lg: 6 }}>
+                <TextField
+                  select
+                  label="Select Category"
+                  variant="outlined"
+                  fullWidth
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  sx={sxSetting}
+                  >
+                  {dropdownSelections.map((option, index) => (
+                    <MenuItem key={index} value={option.name}>
+                      {option.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid2>
+              <Grid2 size={{ xs: 12, md: 12, lg: 6 }}>
+                <TextField
+                  label="Enter Quantity"
+                  variant="outlined"
+                  fullWidth
+                  type="number"
+                  value={qtyPurchased}
+                  onChange={(e) => setQtyPurchased(Number(e.target.value))}
+                  sx={sxSetting}
+                />
+              </Grid2>
 
-        <Grid2 size={{ xs: 12, md: 6, lg: 3 }}>
-          <Button onClick={handleUpdateProduct} sx={sxsettingButton}>
-            Update
-          </Button>
+              <Grid2 size={{ xs: 12, md: 12, lg: 6 }}>
+                <TextField
+                  label="Enter Unit Cost"
+                  variant="outlined"
+                  fullWidth
+                  type="number"
+                  value={unitCost}
+                  onChange={(e) => setUnitCost(Number(e.target.value))}
+                  sx={sxSetting}
+                />
+              </Grid2>
+
+              <Grid2 size={{ xs: 12, md: 12, lg: 6 }}>
+                <TextField
+                  label="Total Amount"
+                  variant="outlined"
+                  fullWidth
+                  value={calculateTotalAmount()}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                  sx={sxSetting}
+                />
+              </Grid2>
+              <Grid2 size={{ xs: 12, md: 12, lg: 6 }}>
+                <TextField
+                  label="Enter Unit Price"
+                  variant="outlined"
+                  fullWidth
+                  value={unitPrice}
+                  onChange={(e) => setUnitPrice(e.target.value)}
+                  sx={sxSetting}
+                />
+              </Grid2>
+              <Grid2 size={{ xs: 12, md: 12, lg: 6 }}>
+                <TextField
+                  label="Enter Supplier Name"
+                  variant="outlined"
+                  fullWidth
+                  value={supplier}
+                  onChange={(e) => setSupplier(e.target.value)}
+                  sx={sxSetting}
+                />
+              </Grid2>
+              <Grid2 size={{ xs: 12, md: 12, lg: 6 }}>
+                <TextField
+                  label="Enter Description"
+                  variant="outlined"
+                  fullWidth
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  sx={sxSetting}
+                />
+              </Grid2>
+              <Grid2 size={{ xs: 12, md: 12, lg: 6 }}>
+                <TextField
+                  label="Enter Rating"
+                  variant="outlined"
+                  fullWidth
+                  value={rating}
+                  onChange={(e) => setRating(e.target.value)}
+                  sx={sxSetting}
+                />
+              </Grid2>
+              <Grid2 size={{ xs: 12, md: 12, lg: 6 }}>
+                <TextField
+                  label="Rating Count"
+                  variant="outlined"
+                  fullWidth
+                  value={ratingCount}
+                  onChange={(e) => setRatingCount(e.target.value)}
+                  sx={sxSetting}
+                />
+              </Grid2>
+              <Grid2 size={{ xs: 12, md: 12, lg: 6 }}>
+                <TextField
+                  label="Enter Discount"
+                  variant="outlined"
+                  fullWidth
+                  value={discount}
+                  onChange={(e) => setDiscount(e.target.value)}
+                  sx={sxSetting}
+                />
+              </Grid2>
+              
+
+              {/* </div> */}
+            </Grid2>
+          </Grid2>
         </Grid2>
-      </Grid2>
+        {/* </div> */}
+      </div>
+
+      <div className="md:mr-6 flex justify-end">
+        <button
+          onClick={onclose}
+          className="mr-3 mt-4 bg-white border hover:bg-orange-500 text-orange-500 py-2 px-4 rounded hover:text-white"
+        >
+          Close
+        </button>
+        <button
+          className="mt-4 bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded"
+          onClick={handleSubmit}
+        >
+          Add Item
+        </button>
+      </div>
     </div>
+    ) : (
+      <div className="flex items-center justify-center h-96">
+        <CircularProgress sx={{color:"orange"}}/>
+      </div>
+    )
   );
 }
 

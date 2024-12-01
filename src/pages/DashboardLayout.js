@@ -18,7 +18,7 @@ function DashboardLayout() {
   const [productCategory, setProductCategory] = useState([]);
 
   const tempacc =
-    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha2Fyb3Jtc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI5OTI0ODEsImV4cCI6MTczMzAwMjU2MX0.MrlbvD3trlnAFoAlEk4Bl-vm7SmhEVqkzeGVa83EafA";
+    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha2Fyb3Jtc0BnbWFpbC5jb20iLCJpYXQiOjE3MzMwMTkzNDQsImV4cCI6MTczMzAyOTQyNH0.11L7wqYMMuZfl5laQEE4XRnsQqbfQHr9zrKzNWCOYv0";
 
   // Fetch users, sales, and products
   useEffect(() => {
